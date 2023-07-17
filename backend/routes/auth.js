@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt'
 import {body,validationResult} from 'express-validator'
 import User from '../models/User.js'
 import UserInfo from '../models/UserInfo.js'
+import fetchUser from '../middleware/fetchUser.js'
 
 const router =express.Router()
 const JWT_SECRET = process.env.JWT_SECRET
@@ -47,7 +48,7 @@ router.post('/register',[
             const authtoken = jwt.sign(data,JWT_SECRET)
             success = true
             // new user stored is returned back
-            res.cookie("auth-token",authtoken,{httpOnly: true}).json({success,message:"Account created successfully"})
+            res.cookie("authtoken",authtoken,{httpOnly: true}).json({success,message:"Account created successfully"})
 
             // res.json(user)
         }catch(error){
@@ -85,10 +86,25 @@ router.post('/login',[
             const authtoken = jwt.sign(data,JWT_SECRET)
             success = true
             // new user stored is returned back
-            res.cookie("auth-token",authtoken,{httpOnly: true}).json({success,message:"Logged in successfully"})
+            res.cookie("authtoken",authtoken,{httpOnly: true}).json({success,message:"Logged in successfully"})
     }catch(error){
         // other errors are handled here
         res.status(500).send("Internal server error occured")
+    }
+})
+
+// route 3: get loggedin user details POST :"/api/auth/getuser" : login required
+router.post('/getuser',fetchUser,async (req,res)=>{
+    try{
+        // obtained from fetchUSer function
+        const userId = req.user.id
+        const user = await User.findById(userId).select("-password")
+        const userInfo = await UserInfo.findOne({userId:userId})
+        const mergedData = { ...user.toObject(), ...userInfo.toObject()}
+        res.send(mergedData)
+    }catch(error){
+        // other errors are handled here
+        res.status(500).send("Internal server error")
     }
 })
 
