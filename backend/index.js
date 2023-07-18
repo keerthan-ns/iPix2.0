@@ -1,8 +1,10 @@
-import connectToMongo from './mongodb.js'
 import express from 'express'
 import cors from 'cors'
-import authRoutes from './routes/auth.js'
 import cookieParser from 'cookie-parser'
+
+import connectToMongo from './mongodb.js'
+import authRoutes from './routes/auth.js'
+import postRoutes from './routes/posts.js'
 
 connectToMongo()
 
@@ -15,6 +17,7 @@ app.use(express.json())
 
 // routes 
 app.use('/api/auth',authRoutes)
+app.use("/posts",postRoutes)
 
 app.listen(port, ()=>{
     console.log(`listening to http://localhost:${port}`)

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 
+// eslint-disable-next-line no-undef
 const JWT_SECRET = process.env.JWT_SECRET
 
 

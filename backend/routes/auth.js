@@ -3,11 +3,13 @@ import express from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import {body,validationResult} from 'express-validator'
+
 import User from '../models/User.js'
 import UserInfo from '../models/UserInfo.js'
 import fetchUser from '../middleware/fetchUser.js'
 
 const router =express.Router()
+// eslint-disable-next-line no-undef
 const JWT_SECRET = process.env.JWT_SECRET
 
 // route 1: POST 'api/auth/register'
