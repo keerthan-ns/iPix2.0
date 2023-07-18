@@ -9,6 +9,10 @@ const postSchema = mongoose.Schema(
     location: String,
     postText: String,
     postImage: String,
+    likedBy:{
+      type: Array,
+      default: []
+    }
   },
   { timestamps: true }
 );
