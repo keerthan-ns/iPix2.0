@@ -53,7 +53,7 @@ router.get('/:uname/posts',fetchUser,async(req,res)=>{
         const {uname} = req.params;
         const [user] = await User.find({userName:uname}).select('_id')
         const userId = user._id
-        const post = await Post.find({userId}).sort({ createdAt: -1 })
+        const post = await Post.find({userId}).populate('comments').sort({ createdAt: -1 }).exec()
         res.status(200).json(post)
     } catch (error) {
         res.status(404).json({message: error.message})
