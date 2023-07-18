@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 const commentsSchema = mongoose.Schema(
   {
-    userId: {
+    postId: {
       type: String,
       required: true,
     },
-    postId: {
+    userName: {
       type: String,
       required: true,
     },

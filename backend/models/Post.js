@@ -12,7 +12,8 @@ const postSchema = mongoose.Schema(
     likedBy:{
       type: Array,
       default: []
-    }
+    },
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comments' }]
   },
   { timestamps: true }
 );

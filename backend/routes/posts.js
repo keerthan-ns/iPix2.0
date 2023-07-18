@@ -5,12 +5,13 @@ import {body,validationResult} from 'express-validator'
 import fetchUser from '../middleware/fetchUser.js'
 import Post from '../models/Post.js'
 import User from '../models/User.js'
+import Comments from '../models/Comments.js'
 
 const router = express.Router()
 
 router.get('/getPosts',fetchUser,async(req,res)=>{
     try {
-        const post = await Post.find().sort({ createdAt: -1 })
+        const post = await Post.find().populate('comments').sort({ createdAt: -1 }).exec()
         res.status(200).json(post)
     } catch (error) {
         res.status(404).json({message: error.message})
@@ -59,7 +60,7 @@ router.get('/:uname/posts',fetchUser,async(req,res)=>{
     }
 })
 
-router.get('/:postId/likesPost',fetchUser,async(req,res)=>{
+router.patch('/:postId/likesPost',fetchUser,async(req,res)=>{
     try {
         let success = true
         let message = "You liked the post"
@@ -79,6 +80,37 @@ router.get('/:postId/likesPost',fetchUser,async(req,res)=>{
     } catch (error) {
         res.status(404).json({message: error.message})
     }
+})
+
+router.post('/:postId/commentPost',fetchUser,[
+        body("commentText","Comments cannot be empty").exists()
+    ],async(req,res)=>{
+        try {
+            // if there are errors, return errors
+            const errors = validationResult(req)
+            if(!errors.isEmpty())
+                return res.status(400).json({errors:errors.array()})
+
+            const userId = req.user.id
+            console.log(userId)
+            const user = await User.findById(userId).select("userName")
+            const userName = user.userName
+            const {commentText} = req.body
+            const {postId} = req.params;
+            
+            const newComment = new Comments({
+                postId,
+                userName,
+                commentText,
+            })
+            await newComment.save()
+            const post = await Post.findById(postId);
+            post.comments.push(newComment);
+            await post.save();
+            res.status(200).json({success:true,message:"Your comment posted"})
+        } catch (error) {
+            res.status(404).json({message: error.message})
+        }
 })
 
 
