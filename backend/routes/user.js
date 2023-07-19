@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import express from 'express'
+import bcrypt from 'bcrypt'
 import {body,validationResult} from 'express-validator'
 
 import fetchUser from '../middleware/fetchUser.js'
@@ -8,7 +9,27 @@ import UserInfo from '../models/UserInfo.js'
 
 const router = express.Router()
 
+router.patch('/update/password',fetchUser,[
+    body('password',"Min password length must be 6").isLength({ min: 6 })
+],async(req,res)=>{
+    try {
+        // if there are errors, return errors
+        const errors = validationResult(req)
+        if(!errors.isEmpty())
+            return res.status(400).json({message:errors.array()[0].msg})
 
+        const userId = req.user.id
+        // hash the new password 
+        const salt = await bcrypt.genSalt(10);
+        const secPass = await bcrypt.hash(req.body.password, salt)
+
+        await User.findByIdAndUpdate(userId,{password: secPass })
+        res.status(200).json({success:true,message:"Password updated"})
+
+    } catch (error) {
+        res.status(404).json({message: error.message})
+    }
+})
 
 router.get('/:uname',fetchUser,async(req,res)=>{
     try {
