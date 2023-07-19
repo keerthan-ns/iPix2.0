@@ -16,7 +16,7 @@ const UserInfoSchema = new mongoose.Schema(
             type : String,
             default : "https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png",
         },
-        friends:{
+        following:{
             type : Array,
             default : []
         },

@@ -9,6 +9,7 @@ import Comments from '../models/Comments.js'
 
 const router = express.Router()
 
+// feed posts
 router.get('/getPosts',fetchUser,async(req,res)=>{
     try {
         const post = await Post.find().populate('comments').sort({ createdAt: -1 }).exec()
@@ -52,6 +53,10 @@ router.get('/:uname/posts',fetchUser,async(req,res)=>{
     try {
         const {uname} = req.params;
         const [user] = await User.find({userName:uname}).select('_id')
+
+        if(!user)
+            return res.status(404).json({message:"User not found"})
+
         const userId = user._id
         const post = await Post.find({userId}).populate('comments').sort({ createdAt: -1 }).exec()
         res.status(200).json(post)
@@ -67,6 +72,10 @@ router.patch('/:postId/likesPost',fetchUser,async(req,res)=>{
         const userId = req.user.id
         const {postId} = req.params;
         const post = await Post.findById(postId)
+        
+        if(!post)
+            return res.status(404).json({message:"Invalid request for post"})
+
         const isLiked = post.likedBy.includes(userId)
 
         if(isLiked){
@@ -78,7 +87,7 @@ router.patch('/:postId/likesPost',fetchUser,async(req,res)=>{
 
         res.status(200).json({success,message})
     } catch (error) {
-        res.status(404).json({message: error.message})
+        res.status(404).json({message: "Something went wrong"})
     }
 })
 
@@ -98,18 +107,23 @@ router.post('/:postId/commentPost',fetchUser,[
             const {commentText} = req.body
             const {postId} = req.params;
             
+            const post = await Post.findById(postId);
+            
+            if(!post)
+                return res.status(404).json({message:"Invalid request for post"})
+
             const newComment = new Comments({
                 postId,
                 userName,
                 commentText,
             })
             await newComment.save()
-            const post = await Post.findById(postId);
+
             post.comments.push(newComment);
             await post.save();
             res.status(200).json({success:true,message:"Your comment posted"})
         } catch (error) {
-            res.status(404).json({message: error.message})
+            res.status(404).json({message: "Something went wrong"})
         }
 })
 
