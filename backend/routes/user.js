@@ -8,6 +8,8 @@ import UserInfo from '../models/UserInfo.js'
 
 const router = express.Router()
 
+
+
 router.get('/:uname',fetchUser,async(req,res)=>{
     try {
         const {uname} = req.params;
@@ -53,6 +55,64 @@ router.patch('/:uname/follow',fetchUser,async(req,res)=>{
     } catch (error) {
         res.status(404).json({message: error.message})
     }
+})
+
+router.patch('/update/fullName',fetchUser,[
+        body('fullname',"Fullname must contain atleast 3 chars").isLength({ min: 3 })
+    ],async(req,res)=>{
+        try {
+            // if there are errors, return errors
+            const errors = validationResult(req)
+            if(!errors.isEmpty())
+                return res.status(400).json({message:errors.array()[0].msg})
+
+            const fullname = req.body.fullname
+            const userId = req.user.id
+
+            const updatedInfo = await UserInfo.findOneAndUpdate({ userId: userId },{fullName: fullname },{new:true})
+            res.status(200).json({success:true,message:"Updated your name",updatedInfo})
+
+        } catch (error) {
+            res.status(404).json({message: error.message})
+        }
+})
+
+router.patch('/update/location',fetchUser,[
+        body('location',"Location must contain atleast 3 chars").isLength({ min: 3 })
+    ],async(req,res)=>{
+        try {
+            // if there are errors, return errors
+            const errors = validationResult(req)
+            if(!errors.isEmpty())
+                return res.status(400).json({message:errors.array()[0].msg})
+
+            const location = req.body.location
+            const userId = req.user.id
+
+            const updatedInfo = await UserInfo.findOneAndUpdate({ userId: userId },{location: location },{new:true})
+            res.status(200).json({success:true,message:"Updated location",updatedInfo})
+        } catch (error) {
+            res.status(404).json({message: error.message})
+        }
+})
+
+router.patch('/update/occupation',fetchUser,[
+        body('occupation',"Occupation must contain min 3 chars").isLength({ min: 3 })
+    ],async(req,res)=>{
+        try {
+            // if there are errors, return errors
+            const errors = validationResult(req)
+            if(!errors.isEmpty())
+                return res.status(400).json({message:errors.array()[0].msg})
+            
+            const occupation = req.body.occupation
+            const userId = req.user.id
+
+            const updatedInfo = await UserInfo.findOneAndUpdate({ userId: userId },{occupation: occupation },{new:true})
+            res.status(200).json({success:true,message:"Updated occupation",updatedInfo})
+        } catch (error) {
+            res.status(404).json({message: error.message})
+        }
 })
 
 export default router

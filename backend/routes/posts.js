@@ -101,7 +101,7 @@ router.post('/:postId/commentPost',fetchUser,[
                 return res.status(400).json({errors:errors.array()})
 
             const userId = req.user.id
-            console.log(userId)
+            
             const user = await User.findById(userId).select("userName")
             const userName = user.userName
             const {commentText} = req.body
