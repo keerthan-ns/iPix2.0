@@ -33,6 +33,10 @@ export default {
         blue:{
           300: '#93c5fd'
         },
+        cyan:{
+          700: '#0e7490',
+          950: '#083344',
+        },
         // Add your custom colors here...
         // primary: '#ff0000',
         // secondary: '#00ff00',

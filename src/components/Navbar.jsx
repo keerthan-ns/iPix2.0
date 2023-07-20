@@ -13,7 +13,7 @@ const Navbar = () => {
     }
   return (
     <>
-        <div className='fixed w-screen z-20 top-0 left-0 mt-4 px-2 md:px-4'>
+        <div className='fixed w-screen z-20 top-0 left-0 pt-4 px-2 md:px-4 bg-gray-950'>
             <nav className=" rounded-lg border border-lightB bg-white dark:bg-gray-950 shadow-lightB shadow-md bg-opacity-20 backdrop-blur-lg">
                 <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                     <Link to="/" className="flex items-center">
@@ -31,11 +31,11 @@ const Navbar = () => {
                             <li className='flex flex-wrap'>
                                 <Link to="/" onClick={toggleNavbar} className={`block py-2 pl-3 pr-4 ${location.pathname==="/"?"text-lightB font-bold":"text-white"} hover:text-lightB hover:font-semibold`}><Home/></Link>
                                 {/* block md:hidden */}
-                                <span className='text-white mx-left my-auto'>Home</span>
+                                <span className='text-white ml-1 my-auto'>Home</span>
                             </li>
                             <li className='flex flex-wrap'>
                                 <Link to="/about" onClick={toggleNavbar} className={`block py-2 pl-3 pr-4 ${location.pathname==="/notifcations"?"text-lightB font-bold":"text-white"} hover:text-lightB hover:font-semibold`}><BellDot/></Link>
-                                <span className='text-white mx-left my-auto'>Notifcations</span>
+                                <span className='text-white ml-1 my-auto'>Notifications</span>
                             </li>
                             <li className='flex flex-wrap'>     
                                 {/* <div className="flex items-center justify-end md:order-2"> */}
@@ -44,12 +44,12 @@ const Navbar = () => {
                                             <img className="w-10 h-10 rounded-full" src="https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png" alt=""/>
                                         </div>
                                     </div>
-                                    <span className='md:hidden text-white mx-left my-auto'>Account</span>
+                                    <span className='md:hidden text-white ml-1 my-auto'>Account</span>
                                 {/* </div> */}
                             </li>
                             <li className='md:hidden flex flex-wrap'>
                                 <Link onClick={handleLogout} className={`block py-2 pl-3 pr-4 text-white hover:text-lightB hover:font-semibold`}><LogOut/></Link>
-                                <span className='text-white mx-left my-auto'>Logout</span>
+                                <span className='text-white ml-1 my-auto'>Logout</span>
                             </li>
                         </ul>
                     </div>
