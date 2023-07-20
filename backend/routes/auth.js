@@ -27,7 +27,7 @@ router.post('/register',[
         try{    
             let user =await User.findOne({ $or: [{ email: req.body.email }, { userName: req.body.uname }] })
             if(user)
-                return res.status(400).json({success,error:"Email or username already exists"})
+                return res.status(400).json({success,message:"Email or username already exists"})
 
             const salt = await bcrypt.genSalt(10);
             const secPass = await bcrypt.hash(req.body.password, salt)
