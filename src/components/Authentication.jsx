@@ -6,7 +6,7 @@ export const Authentication = () => {
     const [showLogin, setShowLogin] = useState(true)
   return (
     <>
-        <div className='w-full p-0'>
+        <div className='h-screen flex items-center justify-center'>
             {
                 showLogin?<Login setShowLogin={setShowLogin}/>:<Signup setShowLogin={setShowLogin}/>
             }

@@ -45,10 +45,10 @@ const Signup = (props) => {
   
   return (
     <>
-      <div className="mt-4 px-2">
+      <div className="mt-4 px-2 w-full">
             <form onSubmit={handleSubmit} className="mx-auto flex max-w-md flex-col gap-4 px-6 py-8 rounded-xl border-2 border-sky-500/50 bg-gray-800 backdrop-blur">
-                <h1 className="text-2xl font-bold text-pink-400 after:content-['_signup']">
-                    <span className="underline underline-offset-8 decoration-7 decoration-[#00D5FA]">
+                <h1 className="text-2xl font-bold text-pink-500 after:content-['_signup']">
+                    <span className="underline underline-offset-8 decoration-7 decoration-lightB">
                         iPix
                     </span>
                 </h1>
@@ -75,7 +75,7 @@ const Signup = (props) => {
                         </span>
                     </div>
                 </div>
-                <Button type="submit" className="mt-2 bg-[#00D5FA] border-none text-gray-950">
+                <Button type="submit" className="mt-2 bg-lightB border-none text-gray-950">
                     {signing && <Spinner size={"4"}/>}Sign Up
                 </Button>
                 <p onClick={()=>{props.setShowLogin(true)}} className='text-blue-300'>Have an account already?</p>

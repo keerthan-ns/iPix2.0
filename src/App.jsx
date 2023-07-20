@@ -1,29 +1,19 @@
-// import { NextUIProvider,createTheme } from '@nextui-org/react'
-import { Authentication } from './components/Authentication'
+import { BrowserRouter as Router,  Route, Routes } from "react-router-dom"
 
-// const darkTheme = createTheme({
-//   type: 'light',
-//   theme: {
-//     colors: {
-//       // brand colors
-//       background: '#111827',
-//       // text:"#000"
-//       // ...  more colors
-//     },
-//     space: {},
-//     fonts: {}
-//   }
-// })
+import { Authentication } from './components/Authentication'
+import Navbar from './components/Navbar'
 
 function App() {
 
   return (
     <>
-        {/* <NextUIProvider theme={darkTheme}> */}
-          <div className='container mt-24 mb-3 mx-auto content-center'>
+      <Router>
             <Authentication/>
+          
+            <Navbar/>
+          <div className='container mt-24 mb-3 mx-auto content-center'>
           </div>
-        {/* </NextUIProvider> */}
+      </Router>
     </>
   )
 }
