@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <Router>
-            <Authentication/>
+            {/* <Authentication/> */}
           
             <Navbar/>
           <div className='container mt-24 mb-3 mx-auto content-center'>
