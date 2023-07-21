@@ -110,5 +110,15 @@ router.post('/getuser',fetchUser,async (req,res)=>{
     }
 })
 
+// route 4: logout the user by clearing the cookie POST:"/api/auth/logout" : login required
+router.post('/logout',fetchUser,async(req,res)=>{
+    try{
+        res.clearCookie('authtoken')
+        res.json({success:true,message:"Logged out successfully !!"})
+    }catch(error){
+        res.status(500).send("Internal server error")
+    }
+})
+
 
 export default router
