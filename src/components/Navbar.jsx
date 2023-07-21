@@ -15,7 +15,7 @@ const Navbar = () => {
     <>
         <div className='fixed w-screen z-20 top-0 left-0 pt-4 px-2 md:px-4 bg-gray-950'>
             <nav className=" rounded-lg border border-lightB bg-white dark:bg-gray-950 shadow-lightB shadow-md bg-opacity-20 backdrop-blur-lg">
-                <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+                <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-3">
                     <Link to="/" className="flex items-center">
                         <FlameIcon color="#ff7b00" className="h-8 mr-3" />
                         <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">iPix</span>

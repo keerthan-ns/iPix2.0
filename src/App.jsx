@@ -12,7 +12,7 @@ function App() {
           {/* <Authentication/> */}
           
           <Navbar/>
-          <div className='container mt-28 mb-3 mx-auto'>
+          <div className='container mt-24 lg:mt-28 mb-3 mx-auto'>
             <Routes> 
               <Route exact path='/' element={<Home/>}/>
               {/* <Route exact path='/about' element={<About/>}/> */}
