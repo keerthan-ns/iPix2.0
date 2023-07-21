@@ -4,11 +4,11 @@ import { CreditCard, MapPin, UserCog2, Users2 } from 'lucide-react'
 const ProfileCard = () => {
   return (
     <>               
-        <div className="divide-y divide-gray-700 w-full max-w-xs p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700">        
-            <div className=' flex flex-row justify-between mb-2 px-3'>
+        <div className="divide-y divide-gray-700  p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700">        
+            <div className=' flex flex-row gap-2 mb-2 px-3'>
                 <div className="flex items-center space-x-4">
                     <img className="w-16 h-16 rounded-full" src="https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png" alt=""/>
-                    <div className="font-medium dark:text-white">
+                    <div className="font-medium dark:text-white overflow-clip">
                         <div>andrew tate</div>
                         <div className="text-sm text-gray-500 dark:text-gray-400">andrew@ipix.com</div>
                     </div>

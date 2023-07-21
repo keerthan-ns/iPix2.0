@@ -28,14 +28,18 @@ const Navbar = () => {
                     </div>
                     <div className="items-center justify-between w-full md:flex md:w-auto md:order-1 hidden" id="navbar-Compo">
                         <ul className="flex flex-col items-left p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-950 dark:border-gray-700">
-                            <li className='flex flex-wrap'>
-                                <Link to="/" onClick={toggleNavbar} className={`block py-2 pl-3 pr-4 ${location.pathname==="/"?"text-lightB font-bold":"text-white"} hover:text-lightB hover:font-semibold`}><Home/></Link>
+                            <li>
+                                <Link to="/" onClick={toggleNavbar} className={`flex flex-wrap py-2 pl-3 pr-4 ${location.pathname==="/"?"text-lightB font-bold":"text-white"} hover:text-lightB hover:font-semibold`}>
+                                    <Home/>
+                                    <span className=' ml-6 md:ml-2 my-auto'>Home</span>
+                                </Link>
                                 {/* block md:hidden */}
-                                <span className='text-white ml-1 my-auto'>Home</span>
                             </li>
-                            <li className='flex flex-wrap'>
-                                <Link to="/about" onClick={toggleNavbar} className={`block py-2 pl-3 pr-4 ${location.pathname==="/notifcations"?"text-lightB font-bold":"text-white"} hover:text-lightB hover:font-semibold`}><BellDot/></Link>
-                                <span className='text-white ml-1 my-auto'>Notifications</span>
+                            <li>
+                                <Link to="/notifcations" onClick={toggleNavbar} className={`flex flex-wrap py-2 pl-3 pr-4 ${location.pathname==="/notifcations"?"text-lightB font-bold":"text-white"} hover:text-lightB hover:font-semibold`}>
+                                    <BellDot/>
+                                    <span className=' ml-6 md:ml-2 my-auto'>Notifications</span>
+                                </Link>
                             </li>
                             <li className='flex flex-wrap'>     
                                 {/* <div className="flex items-center justify-end md:order-2"> */}
