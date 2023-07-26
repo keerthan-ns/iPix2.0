@@ -88,7 +88,12 @@ router.post('/login',[
             const authtoken = jwt.sign(data,JWT_SECRET)
             success = true
             // new user stored is returned back
-            res.cookie("authtoken",authtoken,{httpOnly: true}).json({success,message:"Logged in successfully"})
+            res.cookie("authtoken",authtoken,{
+                expires: new Date(Date.now() + 900000000),
+                httpOnly: true,
+                secure: true,
+            })
+            res.json({success,message:"Logged in successfully",authtoken})
     }catch(error){
         // other errors are handled here
         res.status(500).send("Internal server error occured")
@@ -111,7 +116,7 @@ router.post('/getuser',fetchUser,async (req,res)=>{
 })
 
 // route 4: logout the user by clearing the cookie POST:"/api/auth/logout" : login required
-router.post('/logout',fetchUser,async(req,res)=>{
+router.get('/logout',fetchUser,async(req,res)=>{
     try{
         res.clearCookie('authtoken')
         res.json({success:true,message:"Logged out successfully !!"})

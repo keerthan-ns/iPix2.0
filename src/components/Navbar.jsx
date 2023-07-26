@@ -1,15 +1,34 @@
-import {Link,useLocation} from 'react-router-dom'
+import {Link,useLocation, useNavigate} from 'react-router-dom'
 import { BellDot, Home, FlameIcon, LogOut } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { setIsAuth } from '../state';
 
 const Navbar = () => {
+    let navigate = useNavigate()
     let location = useLocation()
+    const dispatch = useDispatch()
     
     const toggleNavbar=()=>{
         document.getElementById('navbar-Compo').classList.toggle("hidden");
     }
-    const handleLogout =()=>{
-        localStorage.removeItem("token")
-        // window.location.reload()
+    const handleLogout =async()=>{
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/api/auth/logout",{
+            method:'GET',
+            credentials: 'include',
+        })
+        try{
+            const json =await response.json()
+            if(json.success){
+                dispatch(setIsAuth({isAuth:false}))
+                localStorage.removeItem("reduxState")
+                navigate("/auth")
+                console.log(json.message)
+            }
+            else
+                console.log(json.message)
+        } catch (error) {
+            console.error('Error parsing response as JSON:', error);
+            }
     }
   return (
     <>

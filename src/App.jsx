@@ -1,24 +1,49 @@
-import { BrowserRouter as Router,  Route, Routes } from "react-router-dom"
+import { BrowserRouter as Router,  Route, Routes, Navigate, useLocation } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 import { Authentication } from './components/Authentication'
 import Navbar from './components/Navbar'
 import Home from "./components/Home"
 
 function App() {
+  const isAuth = useSelector((state)=>state.auth.isAuth)
+  // let navigate = useNavigate()
+  // {
+  //   !isAuth &&
+  //     <Router>
+  //       <Routes>
+  //         <Route exact path="/auth" element={<Authentication/>}/>
+  //       </Routes>
+  //     </Router>
+  //     {navigate('/auth')}
+    
+  // }
 
   return (
     <>
+      {/* <div className={`container ${isAuth?'mt-24 lg:mt-28 mb-3':''}  mx-auto`}>
+        <Authentication/>
+      </div> */}
+      {/* 
+        <Routes>
+          <Route exact path="/auth" element={<Authentication />} />
+        </Routes>
+        {!isAuth && <Navigate to="/auth" replace/>}  
+        */}
+
       <Router>
-          {/* <Authentication/> */}
-          
-          <Navbar/>
-          <div className='container mt-24 lg:mt-28 mb-3 mx-auto'>
-            <Routes> 
-              <Route exact path='/' element={<Home/>}/>
-              {/* <Route exact path='/about' element={<About/>}/> */}
-            </Routes> 
-          </div>
-      </Router>
+        {(
+          <>
+            {isAuth && <Navbar/>}
+            <div className={`container ${isAuth?'mt-24 lg:mt-28 mb-3':''}  mx-auto`}>
+              <Routes> 
+                <Route exact path='/auth' element={isAuth?<Navigate to='/' replace/>:<Authentication/>}/>
+                <Route exact path='/' element={isAuth?<Home/>:<Navigate to='/auth' replace/>}/>
+              </Routes> 
+            </div>
+          </>
+        )}
+      </Router> 
     </>
   )
 }
