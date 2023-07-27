@@ -1,15 +1,31 @@
+import { useEffect, useState } from 'react'
 import UserTiles from './UserTiles'
+import PropTypes from "prop-types"
 
-const FriendsList = () => {
+const FriendsList = (props) => {
+  // const [followings, setFollowings] = useState({userName:"",fullName:""})
+
+  useEffect(() => {
+  }, [])
+  
   return (
     <>
         <div className="divide-y divide-gray-700 w-auto p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700">        
             <h2 className='text-lightB text-sm font-semibold mb-1'>Friends list</h2>
             <div className="flow-root">
                 <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
-                    <UserTiles avatar={"https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png"} userName={"hulk"} fullName={"Hulk Johnson"}/>
+                    {/* Array.isArray(props.following)? */}
+                  {
+                    Array.isArray(props.following)?props.following.map((userName,i)=>{
+                      return <UserTiles key={i} userName={userName}/>
+                    }):null
+                  }
+                  {
+                    props.following.length==0 && <h2 className='text-center text-white'>Connect with community</h2>
+                  }
+                    {/* <UserTiles avatar={"https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png"} userName={"hulk"} fullName={"Hulk Johnson"}/>
                     <UserTiles avatar={"https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png"} userName={"thor"} fullName={"Thor odin"}/>
-                    <UserTiles avatar={"https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png"} userName={"neil_sims"} fullName={"Neil Sims"}/>
+                    <UserTiles avatar={"https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png"} userName={"neil_sims"} fullName={"Neil Sims"}/> */}
                 </ul>
             </div>
         </div>
@@ -18,3 +34,7 @@ const FriendsList = () => {
 }
 
 export default FriendsList
+
+FriendsList.propTypes = {
+  following: PropTypes.array,
+}

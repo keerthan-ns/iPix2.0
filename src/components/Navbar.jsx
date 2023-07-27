@@ -67,12 +67,14 @@ const Navbar = () => {
                                             <img className="w-10 h-10 rounded-full" src="https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png" alt=""/>
                                         </div>
                                     </div>
-                                    <span className='md:hidden text-white ml-1 my-auto'>Account</span>
+                                    <span className='md:hidden text-white ml-2 my-auto'>Account</span>
                                 {/* </div> */}
                             </li>
                             <li className='md:hidden flex flex-wrap'>
-                                <Link onClick={handleLogout} className={`block py-2 pl-3 pr-4 text-white hover:text-lightB hover:font-semibold`}><LogOut/></Link>
-                                <span className='text-white ml-1 my-auto'>Logout</span>
+                                <Link onClick={handleLogout} className={`flex flex-row py-2 pl-3 pr-4 text-white hover:text-lightB hover:font-semibold`}>
+                                    <LogOut/>
+                                    <span className='text-white ml-6 my-auto'>Logout</span>
+                                </Link>
                             </li>
                         </ul>
                     </div>

@@ -1,8 +1,9 @@
 import { Image } from 'lucide-react'
 import {useState} from 'react'
 import Spinner from './Spinner'
+import PropTypes from "prop-types"
 
-const UploadPostCard = () => {
+const UploadPostCard = (props) => {
     const [uploadImage, setUploadImage] = useState(false)
     const [processing, setProcessing] = useState(false)
     const [buttonText, setButtonText] = useState("Upload post")
@@ -11,7 +12,7 @@ const UploadPostCard = () => {
             <div className="divide-y divide-gray-700 w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700">        
                 <div className='flex flex-col'>
                     <div className='flex flex-row items-center mb-2'>
-                        <img className="w-14 h-14 rounded-full" src="https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png" alt=""/>
+                        <img className="w-14 h-14 rounded-full ring-2 ring-lightB" src={props.avatar?props.avatar:"https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png"} alt=""/>
                         <div className="w-full ml-2">
                             <input type="text" id="postText" placeholder={`What's on your mind....`} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm font-medium rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                         </div>
@@ -46,3 +47,7 @@ const UploadPostCard = () => {
 }
 
 export default UploadPostCard
+
+UploadPostCard.propTypes = {
+    avatar: PropTypes.string,
+}

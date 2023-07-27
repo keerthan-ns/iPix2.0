@@ -9,6 +9,18 @@ import UserInfo from '../models/UserInfo.js'
 
 const router = express.Router()
 
+router.get('/getfollowings',fetchUser,async (req,res)=>{
+    try{
+        // obtained from fetchUSer function
+        const userId = req.user.id
+        const following = await UserInfo.findOne({userId:userId}).select("following -_id")
+        res.send({success:true,following})
+    }catch(error){
+        // other errors are handled here
+        res.status(500).send("Internal server error")
+    }
+})
+
 router.patch('/update/password',fetchUser,[
     body('password',"Min password length must be 6").isLength({ min: 6 })
 ],async(req,res)=>{

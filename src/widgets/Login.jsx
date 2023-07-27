@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 
 const Login = (props) => {
     let navigate = useNavigate()
-    const [credentials, setCredentials] = useState({emailOrUsername:"",password:""})
+    const [credentials, setCredentials] = useState({emailOrUsername:"thor",password:"thor1234"})
     const [logging, setLogging] = useState(false)
     const [isPassword, setIsPassword] = useState(true)
     const dispatch = useDispatch()

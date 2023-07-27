@@ -105,10 +105,10 @@ router.post('/getuser',fetchUser,async (req,res)=>{
     try{
         // obtained from fetchUSer function
         const userId = req.user.id
-        const user = await User.findById(userId).select("-password")
-        const userInfo = await UserInfo.findOne({userId:userId})
+        const user = await User.findById(userId).select("-_id -password -__v")
+        const userInfo = await UserInfo.findOne({userId:userId}).select("-following -_id -__v -createdAt -updatedAt")
         const mergedData = { ...user.toObject(), ...userInfo.toObject()}
-        res.send(mergedData)
+        res.send({success:true,mergedData})
     }catch(error){
         // other errors are handled here
         res.status(500).send("Internal server error")
