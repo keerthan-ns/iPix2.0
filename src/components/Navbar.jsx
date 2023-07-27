@@ -1,13 +1,19 @@
 import {Link,useLocation, useNavigate} from 'react-router-dom'
-import { BellDot, Home, FlameIcon, LogOut } from 'lucide-react';
+import { BellDot, Home, FlameIcon, LogOut, UserCircle2 } from 'lucide-react';
 import { useDispatch } from 'react-redux';
-import { setIsAuth } from '../state';
+import { setIsAuth, setUserId } from '../state';
+import { useState } from 'react';
 
 const Navbar = () => {
     let navigate = useNavigate()
     let location = useLocation()
     const dispatch = useDispatch()
+    const [hideOptions, setHideOptions] = useState(true)
     
+    const toggleOptions=()=>{
+        document.getElementById('options').classList.toggle("md:block");
+    }
+
     const toggleNavbar=()=>{
         document.getElementById('navbar-Compo').classList.toggle("hidden");
     }
@@ -20,6 +26,7 @@ const Navbar = () => {
             const json =await response.json()
             if(json.success){
                 dispatch(setIsAuth({isAuth:false}))
+                dispatch(setUserId({userID:null}))
                 localStorage.removeItem("reduxState")
                 navigate("/auth")
                 console.log(json.message)
@@ -46,7 +53,7 @@ const Navbar = () => {
                         </button>
                     </div>
                     <div className="items-center justify-between w-full md:flex md:w-auto md:order-1 hidden" id="navbar-Compo">
-                        <ul className="flex flex-col items-left p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-950 dark:border-gray-700">
+                        <ul className="flex flex-col gap-2 items-left p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-950 dark:border-gray-700">
                             <li>
                                 <Link to="/" onClick={toggleNavbar} className={`flex flex-wrap py-2 pl-3 pr-4 ${location.pathname==="/"?"text-lightB font-bold":"text-white"} hover:text-lightB hover:font-semibold`}>
                                     <Home/>
@@ -55,19 +62,31 @@ const Navbar = () => {
                                 {/* block md:hidden */}
                             </li>
                             <li>
-                                <Link to="/notifcations" onClick={toggleNavbar} className={`flex flex-wrap py-2 pl-3 pr-4 ${location.pathname==="/notifcations"?"text-lightB font-bold":"text-white"} hover:text-lightB hover:font-semibold`}>
+                                <Link to="/notifications" onClick={toggleNavbar} className={`flex flex-wrap py-2 pl-3 pr-4 ${location.pathname==="/notifcations"?"text-lightB font-bold":"text-white"} hover:text-lightB hover:font-semibold`}>
                                     <BellDot/>
                                     <span className=' ml-6 md:ml-2 my-auto'>Notifications</span>
                                 </Link>
                             </li>
                             <li className='flex flex-wrap'>     
                                 {/* <div className="flex items-center justify-end md:order-2"> */}
-                                    <div className="flex items-center ">
-                                        <div className='flex items-center space-x-1 rounded-md pl-2 pr-1'>
-                                            <img className="w-10 h-10 rounded-full" src="https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png" alt=""/>
+                                    <div onClick={toggleOptions} className="pl-2 flex items-center ">
+                                        {/* <div className='flex items-center space-x-1 rounded-md pl-2 pr-1'> */}
+                                        <div className='flex items-center space-x-1 rounded-md text-white'>
+                                            {/* <img className="w-10 h-10 rounded-full" src="https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png" alt=""/> */}
+                                            <UserCircle2 className='w-8 h-8'/>
                                         </div>
                                     </div>
-                                    <span className='md:hidden text-white ml-2 my-auto'>Account</span>
+                                    <span className='md:hidden text-white ml-5 my-auto'>View profile</span>
+                                    <div id="options" className="absolute hidden  z-10 top-14 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                                        <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
+                                            <li>
+                                                <Link to='' className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">View profile</Link>
+                                            </li>
+                                            <li>
+                                                <Link onClick={handleLogout} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Logout</Link>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 {/* </div> */}
                             </li>
                             <li className='md:hidden flex flex-wrap'>

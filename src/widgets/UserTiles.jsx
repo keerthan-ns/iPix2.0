@@ -1,11 +1,13 @@
 import { UserMinus2, UserPlus2 } from 'lucide-react'
 import PropTypes from "prop-types"
 import { useEffect, useState } from 'react'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 const UserTiles = (props) => {
     const [userName, setUserName] = useState("")
     const [fullName, setFullName] = useState("")
     const [avatar, setAvatar] = useState("")
+    let navigate = useNavigate()
 
     const unfollow = async()=>{
         console.log("unfollow fn")
@@ -37,7 +39,7 @@ const UserTiles = (props) => {
                 <div className="flex-shrink-0">
                     <img className="w-14 h-14 rounded-full" src={avatar?avatar:"https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png"} alt="user image"/>
                 </div>
-                <div className="flex-1 min-w-0" onClick={()=>{console.log(userName)}}>
+                <div className="flex-1 min-w-0" onClick={()=>{navigate(`/${userName}`)}}>
                     <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
                         {userName}
                     </p>

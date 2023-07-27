@@ -105,7 +105,7 @@ router.post('/getuser',fetchUser,async (req,res)=>{
     try{
         // obtained from fetchUSer function
         const userId = req.user.id
-        const user = await User.findById(userId).select("-_id -password -__v")
+        const user = await User.findById(userId).select("-password -__v")
         const userInfo = await UserInfo.findOne({userId:userId}).select("-following -_id -__v -createdAt -updatedAt")
         const mergedData = { ...user.toObject(), ...userInfo.toObject()}
         res.send({success:true,mergedData})

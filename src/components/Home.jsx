@@ -5,11 +5,14 @@ import PostCard from '../widgets/PostCard'
 import FriendsList from '../widgets/FriendsList'
 import BarLoader from '../widgets/BarLoader'
 import Spinner from '../widgets/Spinner'
+import { useDispatch } from 'react-redux'
+import { setUserId } from '../state'
 
 const Home = () => {
+    const dispatch = useDispatch()
     const [fetchingUser, setFetchingUser] = useState(true)
     const [fetchingPosts, setFetchingPosts] = useState(false)
-    // const [userData, setUserData] = useState({})
+    const [posts, setPosts] = useState([])
     const [avatar, setAvatar] = useState("")
     const [fullName, setFullName] = useState("")
     const [userName, setUserName] = useState("")
@@ -53,7 +56,27 @@ const Home = () => {
         }
     }
 
+    const getPosts= async()=>{
+        setFetchingPosts(true)
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/posts/getPosts",{
+            method:'GET',
+            headers:{
+                'Content-type':'application/json',
+            },
+            credentials: 'include',
+        })
+        const json = await response.json()
+        if(json.success){
+            setPosts(json.posts)
+        }
+        else{
+            console.log("ERROR:"+json.message)     
+        }
+        setFetchingPosts(false)
+    }
+
     const initData=async (userData)=>{
+        dispatch(setUserId({userId:userData._id}))
         setAvatar(userData.avatar)
         setFullName(userData.fullName)
         setUserName(userData.userName)
@@ -66,10 +89,11 @@ const Home = () => {
         setFetchingUser(true)
         getUserdata()
         setFetchingUser(false)
+        getPosts()
     },[])
 
     if(fetchingUser)
-        return(<BarLoader/>); 
+        return(<BarLoader/>)
     
     return (
         <>
@@ -79,6 +103,18 @@ const Home = () => {
                 </div>
                 <div className='mx-auto left-0 flex flex-col w-full gap-2 items-center overflow-y-scroll no-scrollbar'>
                     <UploadPostCard avatar={avatar}/>
+                    {
+                        fetchingPosts?
+                        <h1 className='mt-4 text-white text-center'><Spinner size={'10'}/>Loading posts..</h1>:
+                        <>
+                            {
+                                posts?.map((post)=>{
+                                    return <PostCard key={post._id} post={post}/>
+                                })
+                            }
+                        </>
+                    }
+                    
                     {/* <PostCard/> */}
                     {/*   <PostCard/>
                         <PostCard/>
