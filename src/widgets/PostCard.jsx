@@ -5,7 +5,14 @@ import { useSelector } from 'react-redux'
 
 const PostCard = (props) => {
     const [isLiked, setIsLiked] = useState(false)
-    // const [postComments, setPostComments] = useState([])
+    const [likeCount, setLikeCount] = useState(0)
+    const [commentText, setCommentText] = useState("")
+    const [commentList, setCommentList] = useState([])
+    const [commenting, setCommenting] = useState(false)
+    
+    const [userName, setUserName] = useState("")
+    const [avatar, setAvatar] = useState("")
+
     const userId = useSelector((state)=>state.auth.userId)
 
     const toggleCommentList=()=>{
@@ -17,9 +24,108 @@ const PostCard = (props) => {
         document.getElementById("comment-"+props.post._id).classList.toggle('flex')
     }
 
+    const handleCommentChange=(e)=>{
+        setCommentText(e.target.value)
+    }
+
+    const handleCommentSubmit=async (e)=>{
+        e.preventDefault()
+        setCommenting(true)
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/posts/"+props.post._id+"/commentPost",{
+                method:'POST',
+                headers:{
+                        'Content-type':'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({commentText:commentText})
+        })
+        const json = await response.json()
+        if(json.success){
+            console.log(json.message)
+            setCommentList((commentList)=>[...commentList,json.newComment])
+            setCommentText("")
+            toggleCommentModal()
+        }
+        else{
+            console.log("ERROR:"+json.message)     
+        }
+        setCommenting(false)
+    }
+
+    const handleLike = async ()=>{
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/posts/"+props.post._id+"/likesPost",{
+            method:'PATCH',
+            headers:{
+                    'Content-type':'application/json',
+            },
+            credentials: 'include',
+        })
+        const json = await response.json()
+        if(json.success){
+            console.log(json.message)
+            isLiked?setLikeCount(likeCount-1):setLikeCount(likeCount+1)
+            isLiked?setIsLiked(false):(setIsLiked(true))
+        }
+        else
+            console.log("ERROR:"+json.message) 
+    }
+
+    const getuser=async (userId)=>{
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/user/id/"+userId,{
+            method:'GET',
+            headers:{
+                'Content-type':'application/json',
+            },
+            credentials: 'include',
+        })
+        const json = await response.json()
+        setAvatar(json.avatar)
+        setUserName(json.userName)
+    }
+
     useEffect(() => {
+        getuser(props.post.userId)
+        setCommentList(props.post.comments)
+        setLikeCount(props.post.likedBy.length)
         setIsLiked(props.post.likedBy.includes(userId))
     },[])
+
+    // date conversion logic
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = date.getDate();
+        const month = date.toLocaleString('default', { month: 'long' });
+        const year = date.getFullYear().toString().substr(-2);
+        const suffix = getDaySuffix(day);
+      
+        return `${day}${suffix} ${month} ${year}`;
+    }
+
+    function getToday() {
+        const date = new Date();
+        const day = date.getDate();
+        const month = date.toLocaleString('default', { month: 'long' });
+        const year = date.getFullYear().toString().substr(-2);
+        const suffix = getDaySuffix(day);
+      
+        return `${day}${suffix} ${month} ${year}`;
+    }
+
+    function getDaySuffix(day) {
+        if (day >= 11 && day <= 13) {
+          return 'th';
+        }
+        switch (day % 10) {
+          case 1:
+            return 'st';
+          case 2:
+            return 'nd';
+          case 3:
+            return 'rd';
+          default:
+            return 'th';
+        }
+    }
     
 
     return (
@@ -27,10 +133,14 @@ const PostCard = (props) => {
             <div className="divide-y divide-gray-700 w-full max-w-md py-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700">
                 <div className=' flex flex-row justify-between mx-2 mb-2 items-center'>
                     <div className="flex items-center space-x-4">
-                        <img className="w-14 h-14 rounded-full" src="https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png" alt=""/>
-                        <div className="font-medium dark:text-white">
-                            <div>andrew tate</div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400">Posted on: 25th Apr 23</div>
+                        <img className="w-14 h-14 rounded-full" src={avatar?avatar:"https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png"} alt=""/>
+                        <div className="font-medium dark:text-white ">
+                            <div>{userName?userName:"loading..."}</div>
+                            <div className="text-xs text-gray-500 dark:text-gray-400">Posted 
+                                {
+                                    (getToday() === formatDate(props.post.createdAt)?" Today":" on "+formatDate(props.post.createdAt))
+                                }
+                            </div>
                         </div>
                     </div>
                     <div className='h-fit flex p-2 items-center rounded-full text-lightB hover:text-white dark:bg-cyan-950 dark:hover:bg-cyan-700'>
@@ -48,16 +158,16 @@ const PostCard = (props) => {
                 }
                 <div className='mt-2 px-4 py-2 flex flex-row justify-between'>
                     <div className='flex flex-row gap-4 px-3'>
-                        <span className='flex flex-wrap gap-2 text-white'><Heart className={isLiked?'text-lightB':''}/>{props.post.likedBy.length}</span>
-                        <span className='flex flex-wrap gap-2 text-white' onClick={toggleCommentList}><MessageSquare/>{props.post.comments.length}</span>
+                        <span className='flex flex-wrap gap-2 text-white' onClick={handleLike}><Heart className={isLiked?'text-lightB':''}/>{likeCount}</span>
+                        <span className='flex flex-wrap gap-2 text-white' onClick={toggleCommentList}><MessageSquare/>{commentList.length}</span>
                     </div>
                     <span className='text-white'><Share2Icon/></span>
                 </div>
                 <div id={props.post._id} className=' hidden mx-2 pt-1'>
                     <button onClick={toggleCommentModal} className='ml-4 text-white text-sm flex flex-wrap gap-2 mb-2 mt-2'><PlusCircle size={20}/> Add comment..</button>
                     <ul className='ml-2 px-2 py-1 rounded-md max-h-28 bg-gray-800 text-gray-300 text-sm gap-2 flex flex-col divide-y divide-gray-700 text-left overflow-y-scroll '>    
-                        {props.post.comments.length>0 ? (
-                                props.post.comments.map((comment,i)=>{
+                        {commentList.length>0 ? (
+                                commentList.map((comment,i)=>{
                                     return (<div key={i}>
                                                 <span className=' font-semibold text-xs'>{comment.userName}</span>
                                                 <li className='ml-3 text-xs'>{comment.commentText}</li>
@@ -76,13 +186,10 @@ const PostCard = (props) => {
                             <XCircle/>
                         </button>
                         <div className="px-6 py-6 lg:px-8">
-                            <form className="space-y-6" action="#">
-                                <div className='hidden'>
-                                    <input value={props.post._id} readOnly={true} type="text" name="commentId" id="commentId" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="name@company.com" required/>
-                                </div>
+                            <form onSubmit={handleCommentSubmit} className="mt-8">
                                 <div className='flex flex-row gap-2' >
-                                    <input type="text" name="commentText" id="commentText" placeholder="Add your comment" className=" border  text-sm rounded-lg focus:ring-lightB focus:border-lightB block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white" required/>
-                                    <button className='text-lightB bg-gray-600 rounded-full p-3'><SendHorizonal/></button>
+                                    <input value={commentText} onChange={handleCommentChange} type="text" name="commentText" id="commentText" placeholder="Add your comment" className=" border  text-sm rounded-lg focus:ring-lightB focus:border-lightB block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white" required/>
+                                    <button className={`text-lightB bg-gray-600 rounded-full p-3 ${commenting?"animate-spin":""} `} ><SendHorizonal/></button>
                                 </div>
                             </form>
                         </div>

@@ -60,6 +60,23 @@ router.get('/:uname',fetchUser,async(req,res)=>{
     }
 })
 
+router.get('/id/:uid',fetchUser,async(req,res)=>{
+    try {
+        const {uid} = req.params;
+        const [user] = await User.find({_id:uid}).select("-password")
+
+        if(!user)
+            return res.status(404).json({message:"User not found"})
+
+        const userId = user._id
+        const userInfo = await UserInfo.findOne({userId:userId})
+        const mergedData = { ...user.toObject(), ...userInfo.toObject()}
+        res.status(200).json(mergedData)
+    } catch (error) {
+        res.status(404).json({message: error.message})
+    }
+})
+
 router.patch('/:uname/follow',fetchUser,async(req,res)=>{
     try {
         // const loggedId = req.body.id

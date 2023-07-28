@@ -121,7 +121,7 @@ router.post('/:postId/commentPost',fetchUser,[
 
             post.comments.push(newComment);
             await post.save();
-            res.status(200).json({success:true,message:"Your comment posted"})
+            res.status(200).json({success:true,message:"Your comment posted",newComment:newComment})
         } catch (error) {
             res.status(404).json({message: "Something went wrong"})
         }
