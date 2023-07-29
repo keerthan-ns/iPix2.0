@@ -1,4 +1,4 @@
-import { Heart, MessageSquare, PlusCircle, SendHorizonal, Share2Icon, UserCog2, UserMinus2, UserPlus2, XCircle } from 'lucide-react'
+import { Heart, MapPin, MessageSquare, Navigation, PlusCircle, SendHorizonal, Share2Icon, UserCog2, UserMinus2, UserPlus2, XCircle } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types"
 import { useSelector } from 'react-redux'
@@ -135,7 +135,7 @@ const PostCard = (props) => {
                     <div className="flex items-center space-x-4">
                         <img className="w-14 h-14 rounded-full" src={avatar?avatar:"https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png"} alt=""/>
                         <div className="font-medium dark:text-white ">
-                            <div>{userName?userName:"loading..."}</div>
+                            <div>{userName?userName:"loading..."}</div>                            
                             <div className="text-xs text-gray-500 dark:text-gray-400">Posted 
                                 {
                                     (getToday() === formatDate(props.post.createdAt)?" Today":" on "+formatDate(props.post.createdAt))
@@ -160,6 +160,10 @@ const PostCard = (props) => {
                     <div className='flex flex-row gap-4 px-3'>
                         <span className='flex flex-wrap gap-2 text-white' onClick={handleLike}><Heart className={isLiked?'text-lightB':''}/>{likeCount}</span>
                         <span className='flex flex-wrap gap-2 text-white' onClick={toggleCommentList}><MessageSquare/>{commentList.length}</span>
+                        {
+                            props.post.location &&
+                            <div className="flex flex-row items-center gap-1 text-xs text-gray-500 dark:text-gray-400"><MapPin size={18} />{props.post.location} </div>
+                        }
                     </div>
                     <span className='text-white'><Share2Icon/></span>
                 </div>

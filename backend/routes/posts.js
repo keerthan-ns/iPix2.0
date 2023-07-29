@@ -43,7 +43,7 @@ router.post('/uploadPost',fetchUser,[
             
             const savedPost = await newPost.save()
             success = true
-            res.send({success,savedPost})
+            res.send({success,message:"Post uploaded successfully",savedPost})
         } catch (error) {
             res.status(404).json({message: error.message})
         }
