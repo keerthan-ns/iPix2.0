@@ -12,6 +12,7 @@
   "dependencies": {
     "@nextui-org/react": "^1.0.0-beta.13",
     "@reduxjs/toolkit": "^1.9.5",
+    "compressorjs": "^1.2.1",
     "flowbite": "^1.7.0",
     "flowbite-react": "^0.4.11",
     "lucide-react": "^0.262.0",

@@ -143,17 +143,20 @@ const PostCard = (props) => {
                             </div>
                         </div>
                     </div>
-                    <div className='h-fit flex p-2 items-center rounded-full text-lightB hover:text-white dark:bg-cyan-950 dark:hover:bg-cyan-700'>
-                        <UserPlus2/>
-                        {/* <UserMinus2/> */}
-                    </div>
+                    {
+                        props.post.userId!=userId?
+                        <div className='h-fit flex p-2 items-center rounded-full text-lightB hover:text-white dark:bg-cyan-950 dark:hover:bg-cyan-700'>
+                            <UserPlus2/>
+                            {/* <UserMinus2/> */}
+                        </div>:<></>
+                    }
                 </div>
                 <div className='h-auto max-w-full mx-2 my-2 px-2 py-2 border-separate border border-white rounded-md'>
                     <p className='text-sm text-white text-justify'>{props.post.postText}</p>
                 </div>
                 {
                     props.post.postImage?
-                        <img className="h-auto max-w-full mx-auto" src={props.post.postImage} alt="post image"></img>:
+                        <div className='h-auto w-full bg-gray-300'><img className="h-auto max-w-full mx-auto " src={props.post.postImage} alt="post image"/></div>:
                         <></>
                 }
                 <div className='mt-2 px-4 py-2 flex flex-row justify-between'>

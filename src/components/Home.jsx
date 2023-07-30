@@ -102,7 +102,7 @@ const Home = () => {
                     <ProfileCard user={{avatar,userName,fullName,email,location,following,occupation}}/>
                 </div>
                 <div className='mx-auto left-0 flex flex-col w-full gap-2 items-center overflow-y-scroll no-scrollbar'>
-                    <UploadPostCard avatar={avatar}/>
+                    <UploadPostCard avatar={avatar} getPosts={getPosts}/>
                     {
                         fetchingPosts?
                         <h1 className='mt-4 text-white text-center'><Spinner size={'10'}/>Loading posts..</h1>:

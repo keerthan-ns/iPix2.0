@@ -29,7 +29,7 @@ const Navbar = () => {
                 dispatch(setUserId({userID:null}))
                 localStorage.removeItem("reduxState")
                 navigate("/auth")
-                console.log(json.message)
+                console.log(json.message)//replace with custom alert box
             }
             else
                 console.log(json.message)

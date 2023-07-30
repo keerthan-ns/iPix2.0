@@ -35,6 +35,7 @@ const Login = (props) => {
         if(json.success){
             dispatch(setIsAuth({isAuth:true}))
             navigate("/")
+            console.log(json.message)//replace with custom alert box
         }
         else{
             console.log("ERROR:"+json.message)     

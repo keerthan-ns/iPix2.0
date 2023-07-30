@@ -1,6 +1,8 @@
 import 'dotenv/config'
 import express from 'express'
 import {body,validationResult} from 'express-validator'
+import multer from 'multer'
+import { v2 as cloudinary } from "cloudinary"
 
 import fetchUser from '../middleware/fetchUser.js'
 import Post from '../models/Post.js'
@@ -19,7 +21,26 @@ router.get('/getPosts',fetchUser,async(req,res)=>{
     }
 })
 
-router.post('/uploadPost',fetchUser,[
+// set-up required for uploading images
+const storage = multer.memoryStorage()
+const upload = multer({ 
+    storage: storage 
+})
+cloudinary.config({ 
+    cloud_name: process.env.CLOUDINARY_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true
+})
+
+// // Configure multer to increase file size limit
+// const upload = multer({
+//     limits: {
+//       fileSize: 10 * 1024 * 1024, // 10MB limit (adjust as needed)
+//     },
+// })
+
+router.post('/uploadPost',fetchUser,upload.single('postImage'),[
         body("postText","Post content cannot be empty").exists()
     ],async(req,res)=>{
         let success = false
@@ -31,15 +52,28 @@ router.post('/uploadPost',fetchUser,[
         try {
             // obtained from fetchUSer function
             const userId = req.user.id
-            const {location,postText,postImage} = req.body
+            const postText = req.body.postText
+            const location = req.body.location
+            let result
+            if(req.file && req.file.buffer){
+                result = await new Promise((resolve, reject) => {
+                    cloudinary.uploader.upload_stream({ folder: 'ipix2' }, (error, result) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result);
+                    }
+                    }).end(req.file.buffer);
+                })
+            }
             const newPost = new Post({
                 userId,
                 postText: postText,
             })
             if(location)
                 newPost.location = location
-            if(postImage)
-                newPost.postImage = postImage
+            if(req.file && req.file.buffer)
+                newPost.postImage = result.secure_url
             
             const savedPost = await newPost.save()
             success = true
