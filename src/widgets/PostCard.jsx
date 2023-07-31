@@ -4,6 +4,7 @@ import PropTypes from "prop-types"
 import { useSelector } from 'react-redux'
 
 const PostCard = (props) => {
+    const [isFollowing, setIsFollowing] = useState(true)
     const [isLiked, setIsLiked] = useState(false)
     const [likeCount, setLikeCount] = useState(0)
     const [commentText, setCommentText] = useState("")
@@ -79,8 +80,9 @@ const PostCard = (props) => {
             credentials: 'include',
         })
         const json = await response.json()
-        setAvatar(json.avatar)
-        setUserName(json.userName)
+        setIsFollowing(json.isFollowing)
+        setAvatar(json.mergedData.avatar)
+        setUserName(json.mergedData.userName)
     }
 
     useEffect(() => {
@@ -146,8 +148,7 @@ const PostCard = (props) => {
                     {
                         props.post.userId!=userId?
                         <div className='h-fit flex p-2 items-center rounded-full text-lightB hover:text-white dark:bg-cyan-950 dark:hover:bg-cyan-700'>
-                            <UserPlus2/>
-                            {/* <UserMinus2/> */}
+                            {isFollowing?<UserMinus2/>:<UserPlus2/>}
                         </div>:<></>
                     }
                 </div>

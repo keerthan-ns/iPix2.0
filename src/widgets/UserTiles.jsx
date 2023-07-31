@@ -4,26 +4,39 @@ import { useEffect, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 
 const UserTiles = (props) => {
+    const [isFollowing, setIsFollowing] = useState(true)
     const [userName, setUserName] = useState("")
     const [fullName, setFullName] = useState("")
     const [avatar, setAvatar] = useState("")
     let navigate = useNavigate()
 
     const unfollow = async()=>{
-        console.log("unfollow fn")
-    }
-
-    const getuser=async ()=>{
-        const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/user/"+props.userName,{
-            method:'GET',
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/user/"+props.userName+"/follow",{
+            method:'PATCH',
             headers:{
                 'Content-type':'application/json',
             },
             credentials: 'include',
         })
         const json = await response.json()
-        setAvatar(json.avatar)
-        setFullName(json.fullName)
+        if(json.success){
+            console.log(json.message)
+        }else
+            console.log("Error:"+json.message)
+    }
+
+    const getuser=async ()=>{
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/user/"+props.userName,{
+            method:'GET',
+            headers:{   
+                'Content-type':'application/json',
+            },
+            credentials: 'include',
+        })
+        const json = await response.json()
+        setAvatar(json.mergedData[avatar])
+        setFullName(json.mergedData.fullName)
+        setIsFollowing(json.isFollowing)
     }
 
     useEffect(() => {
@@ -48,8 +61,7 @@ const UserTiles = (props) => {
                     </p>
                 </div>
                 <div onClick={unfollow} className='h-fit inline-flex p-2 items-center rounded-full text-lightB hover:text-white dark:bg-cyan-950 dark:hover:bg-cyan-700'>
-                    <UserMinus2/>
-                    {/* <UserPlus2/> */}
+                    {isFollowing?<UserMinus2/>:<UserPlus2/>}
                 </div>
             </div>
         </li>

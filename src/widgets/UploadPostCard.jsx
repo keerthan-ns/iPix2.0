@@ -37,7 +37,7 @@ const UploadPostCard = (props) => {
                 setPostData({postText:"",location:""})
             }
             else{
-                console.log("ERROR:"+json.message)     
+                console.log("ERROR:"+json.message)//replace with custom alert box
             }
             setSelectedImage(null)
             uploadForm.current.reset()

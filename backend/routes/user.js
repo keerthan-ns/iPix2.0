@@ -45,6 +45,7 @@ router.patch('/update/password',fetchUser,[
 
 router.get('/:uname',fetchUser,async(req,res)=>{
     try {
+        const loggedId = req.user.id
         const {uname} = req.params;
         const [user] = await User.find({userName:uname}).select("-password")
 
@@ -54,7 +55,12 @@ router.get('/:uname',fetchUser,async(req,res)=>{
         const userId = user._id
         const userInfo = await UserInfo.findOne({userId:userId})
         const mergedData = { ...user.toObject(), ...userInfo.toObject()}
-        res.status(200).json(mergedData)
+
+        // check if logged user if following this user
+        const list = await UserInfo.findOne({userId:loggedId}).select("following")
+        const isFollowing = list.following.includes(user.userName)
+
+        res.status(200).json({mergedData,isFollowing})
     } catch (error) {
         res.status(404).json({message: error.message})
     }
@@ -62,7 +68,9 @@ router.get('/:uname',fetchUser,async(req,res)=>{
 
 router.get('/id/:uid',fetchUser,async(req,res)=>{
     try {
-        const {uid} = req.params;
+        const loggedId = req.user.id
+
+        const {uid} = req.params
         const [user] = await User.find({_id:uid}).select("-password")
 
         if(!user)
@@ -71,7 +79,12 @@ router.get('/id/:uid',fetchUser,async(req,res)=>{
         const userId = user._id
         const userInfo = await UserInfo.findOne({userId:userId})
         const mergedData = { ...user.toObject(), ...userInfo.toObject()}
-        res.status(200).json(mergedData)
+
+        // check if logged user if following this user
+        const list = await UserInfo.findOne({userId:loggedId}).select("following")
+        const isFollowing = list.following.includes(user.userName)
+
+        res.status(200).json({mergedData,isFollowing})
     } catch (error) {
         res.status(404).json({message: error.message})
     }

@@ -5,11 +5,13 @@ import PostCard from '../widgets/PostCard'
 import FriendsList from '../widgets/FriendsList'
 import BarLoader from '../widgets/BarLoader'
 import Spinner from '../widgets/Spinner'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setUserId } from '../state'
 
 const Home = () => {
     const dispatch = useDispatch()
+    const userId = useSelector((state)=>state.auth.userId)
+
     const [fetchingUser, setFetchingUser] = useState(true)
     const [fetchingPosts, setFetchingPosts] = useState(false)
     const [posts, setPosts] = useState([])
@@ -99,7 +101,7 @@ const Home = () => {
         <>
             <div className='sticky place-self-center w-auto m-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center p-2 gap-2 h-screen overflow-y-hidden'>
                 <div className='hidden w-auto md:block'>
-                    <ProfileCard user={{avatar,userName,fullName,email,location,following,occupation}}/>
+                    <ProfileCard user={{userId,avatar,userName,fullName,email,location,following,occupation}}/>
                 </div>
                 <div className='mx-auto left-0 flex flex-col w-full gap-2 items-center overflow-y-scroll no-scrollbar'>
                     <UploadPostCard avatar={avatar} getPosts={getPosts}/>
