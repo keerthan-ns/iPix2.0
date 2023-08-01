@@ -1,4 +1,4 @@
-import { CreditCard, MapPin, UserCog2, Users2 } from 'lucide-react'
+import { CreditCard, MapPin, UserCog2, UserMinus2, UserPlus2, Users2 } from 'lucide-react'
 import PropTypes from "prop-types"
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 const ProfileCard = (props) => {
     const userId = useSelector((state)=>state.auth.userId)
     useEffect(() => {
-    //   console.log(props)
+      console.log(props)
     }, [])
     
   return (
@@ -23,9 +23,9 @@ const ProfileCard = (props) => {
                     </div>
                 </div>
                 {
-                    userId==props.user.userId &&
-                    <div className='flex items-center'>
-                        <UserCog2 color="#ffffff" />
+                    userId==props.user.userId && 
+                    <div className='flex items-center cursor-pointer text-white hover:text-lightB'>
+                        <UserCog2 />
                     </div>
                 }
             </div>
@@ -53,6 +53,12 @@ const ProfileCard = (props) => {
                         <button type="button" className=" w-full text-lightB hover:text-white font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700 dark:focus:ring-white dark:border-white">View full profile</button>
                     </div>
                 }
+                {
+                    userId!=props.user.userId? 
+                    <div className='w-full flex'>
+                        <button type="button" className=" w-full text-lightB hover:text-white font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700 dark:focus:ring-white dark:border-white">{props.isFollowing?"Unfollow":"Follow"}</button>
+                    </div>:<></>
+                }
             </div>
         </div>
     </>
@@ -63,6 +69,7 @@ export default ProfileCard
 
 ProfileCard.propTypes = {
     user: PropTypes.object,
+    isFollowing: PropTypes.bool,
     // avatar: PropTypes.string,
     // userName: PropTypes.string,
     // fullName: PropTypes.string,

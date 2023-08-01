@@ -2,8 +2,10 @@ import { Heart, MapPin, MessageSquare, Navigation, PlusCircle, SendHorizonal, Sh
 import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types"
 import { useSelector } from 'react-redux'
+import {  useNavigate } from 'react-router-dom'
 
 const PostCard = (props) => {
+    let navigate = useNavigate()
     const [isFollowing, setIsFollowing] = useState(true)
     const [isLiked, setIsLiked] = useState(false)
     const [likeCount, setLikeCount] = useState(0)
@@ -57,7 +59,7 @@ const PostCard = (props) => {
         const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/posts/"+props.post._id+"/likesPost",{
             method:'PATCH',
             headers:{
-                    'Content-type':'application/json',
+                'Content-type':'application/json',
             },
             credentials: 'include',
         })
@@ -135,10 +137,10 @@ const PostCard = (props) => {
             <div className="divide-y divide-gray-700 w-full max-w-md py-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700">
                 <div className=' flex flex-row justify-between mx-2 mb-2 items-center'>
                     <div className="flex items-center space-x-4">
-                        <img className="w-14 h-14 rounded-full" src={avatar?avatar:"https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png"} alt=""/>
+                        <img className="w-14 h-14 rounded-full cursor-pointer" onClick={()=>{navigate(`/${userName}`)}} src={avatar?avatar:"https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png"} alt=""/>
                         <div className="font-medium dark:text-white ">
-                            <div>{userName?userName:"loading..."}</div>                            
-                            <div className="text-xs text-gray-500 dark:text-gray-400">Posted 
+                            <div className='cursor-pointer hover:text-lightB' onClick={()=>{navigate(`/${userName}`)}}>{userName?userName:"loading..."}</div>                            
+                            <div className="text-xs text-gray-500 dark:text-gray-400 cursor-default">Posted 
                                 {
                                     (getToday() === formatDate(props.post.createdAt)?" Today":" on "+formatDate(props.post.createdAt))
                                 }
@@ -147,7 +149,7 @@ const PostCard = (props) => {
                     </div>
                     {
                         props.post.userId!=userId?
-                        <div className='h-fit flex p-2 items-center rounded-full text-lightB hover:text-white dark:bg-cyan-950 dark:hover:bg-cyan-700'>
+                        <div onClick={()=>{}} className='h-fit flex p-2 items-center rounded-full text-lightB hover:text-white dark:bg-cyan-950 dark:hover:bg-cyan-700'>
                             {isFollowing?<UserMinus2/>:<UserPlus2/>}
                         </div>:<></>
                     }

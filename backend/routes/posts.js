@@ -92,8 +92,8 @@ router.get('/:uname/posts',fetchUser,async(req,res)=>{
             return res.status(404).json({message:"User not found"})
 
         const userId = user._id
-        const post = await Post.find({userId}).populate('comments').sort({ createdAt: -1 }).exec()
-        res.status(200).json(post)
+        const posts = await Post.find({userId}).populate('comments').sort({ createdAt: -1 }).exec()
+        res.status(200).json({success:true,posts})
     } catch (error) {
         res.status(404).json({message: error.message})
     }

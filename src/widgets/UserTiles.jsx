@@ -50,13 +50,13 @@ const UserTiles = (props) => {
         <li className="py-3 sm:py-4">
             <div className="flex items-center space-x-4">
                 <div className="flex-shrink-0">
-                    <img className="w-14 h-14 rounded-full" src={avatar?avatar:"https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png"} alt="user image"/>
+                    <img className="w-14 h-14 rounded-full cursor-pointer" onClick={()=>{navigate(`/${userName}`)}} src={avatar?avatar:"https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png"} alt="user image"/>
                 </div>
-                <div className="flex-1 min-w-0" onClick={()=>{navigate(`/${userName}`)}}>
-                    <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                <div className="flex-1 min-w-0 " onClick={()=>{navigate(`/${userName}`)}}>
+                    <p className="text-sm font-medium text-gray-900 truncate dark:text-white cursor-pointer hover:text-lightB">
                         {userName}
                     </p>
-                    <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                    <p className="text-sm text-gray-500 truncate dark:text-gray-400 cursor-default">
                         {fullName}
                     </p>
                 </div>
