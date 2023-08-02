@@ -73,6 +73,11 @@ const PostCard = (props) => {
             console.log("ERROR:"+json.message) 
     }
 
+    const followUser=async()=>{
+        await props.followUser(userName)
+        isFollowing?setIsFollowing(false):setIsFollowing(true)
+    }
+
     const getuser=async (userId)=>{
         const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/user/id/"+userId,{
             method:'GET',
@@ -147,12 +152,12 @@ const PostCard = (props) => {
                             </div>
                         </div>
                     </div>
-                    {
+                    {/* {
                         props.post.userId!=userId?
-                        <div onClick={()=>{}} className='h-fit flex p-2 items-center rounded-full text-lightB hover:text-white dark:bg-cyan-950 dark:hover:bg-cyan-700'>
+                        <div onClick={followUser} className='h-fit flex p-2 items-center rounded-full text-lightB hover:text-white dark:bg-cyan-950 dark:hover:bg-cyan-700'>
                             {isFollowing?<UserMinus2/>:<UserPlus2/>}
                         </div>:<></>
-                    }
+                    } */}
                 </div>
                 <div className='h-auto max-w-full mx-2 my-2 px-2 py-2 border-separate border border-white rounded-md'>
                     <p className='text-sm text-white text-justify'>{props.post.postText}</p>
@@ -214,4 +219,5 @@ export default PostCard
 
 PostCard.propTypes = {
     post: PropTypes.object,
+    followUser: PropTypes.func,
 }

@@ -35,6 +35,7 @@ const UploadPostCard = (props) => {
             if(json.success){
                 console.log(json.message)//replace with custom alert box
                 setPostData({postText:"",location:""})
+                props.getPosts()
             }
             else{
                 console.log("ERROR:"+json.message)//replace with custom alert box

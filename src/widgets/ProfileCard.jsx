@@ -1,11 +1,21 @@
 import { CreditCard, MapPin, UserCog2, UserMinus2, UserPlus2, Users2 } from 'lucide-react'
 import PropTypes from "prop-types"
+import { useState } from 'react'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 
 const ProfileCard = (props) => {
+    let navigate = useNavigate()
     const userId = useSelector((state)=>state.auth.userId)
+    const [isFollowing, setIsFollowing] = useState(props.isFollowing)
+
+    const followUser = async(uname)=>{
+        props.followUser(uname)
+        isFollowing?setIsFollowing(false):setIsFollowing(true)
+    }
+
     useEffect(() => {
       console.log(props)
     }, [])
@@ -48,15 +58,15 @@ const ProfileCard = (props) => {
                     </div>
                 </div>
                 {
-                    userId==props.user.userId &&
+                    userId==props.user.userId && location.pathname!=`/${props.user.userName}` &&
                     <div className='w-full flex'>
-                        <button type="button" className=" w-full text-lightB hover:text-white font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700 dark:focus:ring-white dark:border-white">View full profile</button>
+                        <button onClick={()=>{navigate(`/${props.user.userName}`)}} type="button" className=" w-full text-lightB hover:text-white font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700 dark:focus:ring-white dark:border-white">View full profile</button>
                     </div>
                 }
                 {
                     userId!=props.user.userId? 
                     <div className='w-full flex'>
-                        <button type="button" className=" w-full text-lightB hover:text-white font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700 dark:focus:ring-white dark:border-white">{props.isFollowing?"Unfollow":"Follow"}</button>
+                        <button onClick={()=>{followUser(props.user.userName)}} type="button" className=" w-full text-lightB hover:text-white font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700 dark:focus:ring-white dark:border-white">{isFollowing?"Unfollow":"Follow"}</button>
                     </div>:<></>
                 }
             </div>
@@ -70,6 +80,7 @@ export default ProfileCard
 ProfileCard.propTypes = {
     user: PropTypes.object,
     isFollowing: PropTypes.bool,
+    followUser: PropTypes.func,
     // avatar: PropTypes.string,
     // userName: PropTypes.string,
     // fullName: PropTypes.string,

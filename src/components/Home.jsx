@@ -33,6 +33,7 @@ const Home = () => {
         })
         const json = await response.json()
         if(json.success){
+            console.log(json)
             initData(json.mergedData)
             getfollowings()
         }
@@ -77,6 +78,20 @@ const Home = () => {
         setFetchingPosts(false)
     }
 
+    const followUser = async(uname)=>{
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/user/"+uname+"/follow",{
+            method:'PATCH',
+            credentials: 'include',
+        })
+        const json = await response.json()
+        if(json.success){
+            console.log(json.message)//use custom alert later 
+            getfollowings()
+        }
+        else    
+            console.log("ERROR:"+json.message)
+    }
+
     const initData=async (userData)=>{
         dispatch(setUserId({userId:userData._id}))
         setAvatar(userData.avatar)
@@ -101,7 +116,7 @@ const Home = () => {
         <>
             <div className='sticky place-self-center w-auto m-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center p-2 gap-2 h-screen overflow-y-hidden'>
                 <div className='hidden w-auto md:block'>
-                    <ProfileCard user={{userId,avatar,userName,fullName,email,location,following,occupation}}/>
+                    <ProfileCard user={{userId,avatar,userName,fullName,email,location,following,occupation}} followUser={followUser}/>
                 </div>
                 <div className='mx-auto left-0 flex flex-col w-full gap-2 items-center overflow-y-scroll no-scrollbar'>
                     <UploadPostCard avatar={avatar} getPosts={getPosts}/>
@@ -111,7 +126,7 @@ const Home = () => {
                         <>
                             {
                                 posts?.map((post)=>{
-                                    return <PostCard key={post._id} post={post}/>
+                                    return <PostCard key={post._id} post={post} followUser={followUser}/>
                                 })
                             }
                         </>
@@ -129,7 +144,7 @@ const Home = () => {
                     } */}
                 </div>
                 <div className='hidden w-auto lg:block'>
-                    <FriendsList following={following}/>
+                    <FriendsList following={following} followUser={followUser}/>
                 </div>
             </div>
             {/* <div className='fixed place-self-center w-auto m-auto flex flex-col md:flex-row content-center justify-center p-2 gap-2 max-h-screen overflow-y-clip'>

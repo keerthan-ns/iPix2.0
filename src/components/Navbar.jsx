@@ -71,7 +71,7 @@ const Navbar = () => {
                                 {/* <div className="flex items-center justify-end md:order-2"> */}
                                     <div onClick={toggleOptions} className="pl-2 flex items-center ">
                                         {/* <div className='flex items-center space-x-1 rounded-md pl-2 pr-1'> */}
-                                        <div className='flex items-center space-x-1 rounded-md text-white'>
+                                        <div className='flex items-center space-x-1 rounded-md text-white cursor-pointer'>
                                             {/* <img className="w-10 h-10 rounded-full" src="https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png" alt=""/> */}
                                             <UserCircle2 className='w-8 h-8'/>
                                         </div>
@@ -80,7 +80,7 @@ const Navbar = () => {
                                     <div id="options" className="absolute hidden  z-10 top-14 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                                         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
                                             <li>
-                                                <Link to='' className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">View profile</Link>
+                                                <Link to={`/`} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">View profile</Link>
                                             </li>
                                             <li>
                                                 <Link onClick={handleLogout} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Logout</Link>

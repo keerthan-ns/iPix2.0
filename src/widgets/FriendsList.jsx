@@ -17,7 +17,7 @@ const FriendsList = (props) => {
                     {/* Array.isArray(props.following)? */}
                   {
                     Array.isArray(props.following)?props.following.map((userName,i)=>{
-                      return <UserTiles key={i} userName={userName}/>
+                      return <UserTiles key={i} userName={userName} followUser={props.followUser}/>
                     }):null
                   }
                   {
@@ -37,4 +37,5 @@ export default FriendsList
 
 FriendsList.propTypes = {
   following: PropTypes.array,
+  followUser: PropTypes.func,
 }
