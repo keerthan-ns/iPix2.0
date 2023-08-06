@@ -5,7 +5,6 @@ import AlertContext from './alertContext'
 const AlertState = (props) => {
     const [alert, setAlert] = useState(null)
     const showAlert = (success,message) =>{
-        console.log("djfhfjfbjdh")
         setAlert({
             success: success,
             message: message,
