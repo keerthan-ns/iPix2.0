@@ -178,4 +178,63 @@ router.patch('/update/occupation',fetchUser,[
         }
 })
 
+router.post('/search',fetchUser,[
+    body("search","Search cannot be empty").exists()
+],async(req,res)=>{
+    try {
+        // if there are errors, return errors
+        const errors = validationResult(req)
+        if(!errors.isEmpty())
+            return res.status(400).json({errors:errors.array()})
+
+        const search = req.body.search
+        
+        const searchUser = await User.find({ userName: { $regex: search, $options: 'i' } }).select("-password -createdAt -updatedAt")
+        const userIds = searchUser.map(user => user._id)
+        const userInfoSemi = await UserInfo.find({ userId: { $in: userIds } }).select("-following -location -occupation")
+
+        const userInfoSearchResults = searchUser.map(user => {
+            const userInfo = userInfoSemi.find(info => info.userId.toString() === user._id.toString());
+            return { ...user.toObject(), ...(userInfo ? userInfo.toObject() : {}) };
+        })
+
+        const searchUserInfo = await UserInfo.find({ fullName: { $regex: search, $options: 'i' } }).select("-following -location -occupation")
+        const userInfoIds = searchUserInfo.map(user => user.userId)
+        const userSemi = await User.find({ _id: { $in: userInfoIds } }).select("-password -createdAt -updatedAt")
+
+        const userSearchResults = searchUserInfo.map(info => {
+            const userI = userSemi.find(user => user._id.toString() === info.userId.toString());
+            return { ...info.toObject(), ...(userI ? userI.toObject() : {}) };
+        })
+
+
+        // const searchResults = userInfoSearchResults.concat(userSearchResults)
+        
+        const uniqueUserIds = new Set();
+
+        // Merge searchUser and userInfoSemi arrays while eliminating duplicates
+        const searchResults = [];
+
+        // Add searchUser objects to searchResults and uniqueUserIds
+        userInfoSearchResults.forEach(user => {
+        if (!uniqueUserIds.has(user.userId.toString())) {
+            searchResults.push(user);
+            uniqueUserIds.add(user.userId.toString());
+        }
+        });
+
+        // Add userInfoSemi objects to searchResults and uniqueUserIds
+        userSearchResults.forEach(info => {
+        if (!uniqueUserIds.has(info.userId.toString())) {
+            searchResults.push(info);
+            uniqueUserIds.add(info.userId.toString());
+        }
+        })
+        
+        res.status(200).json({success:true,searchResults:searchResults})
+    } catch (error) {
+        res.status(404).json({message: error})
+    }
+})
+
 export default router

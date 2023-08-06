@@ -21,6 +21,7 @@ const Home = () => {
     const [location, setLocation] = useState("")
     const [email, setEmail] = useState("")
     const [occupation, setOccupation] = useState("")
+    const [viewedProfile, setViewedProfile] = useState(0)
     const [following, setFollowing] = useState([])
     
     const getUserdata= async()=>{
@@ -52,6 +53,7 @@ const Home = () => {
         })
         const json = await response.json()
         if(json.success){
+            console.log(json)
             setFollowing(json.following.following)
         }
         else{
@@ -100,6 +102,7 @@ const Home = () => {
         setEmail(userData.email)
         setLocation(userData.location)
         setOccupation(userData.occupation)
+        setViewedProfile(userData.viewedProfile)
     }
 
     useEffect(() => {
@@ -116,7 +119,7 @@ const Home = () => {
         <>
             <div className='sticky place-self-center w-auto m-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center p-2 gap-2 h-screen overflow-y-hidden'>
                 <div className='hidden w-auto md:block'>
-                    <ProfileCard user={{userId,avatar,userName,fullName,email,location,following,occupation}} followUser={followUser}/>
+                    <ProfileCard user={{userId,avatar,userName,fullName,email,location,following,occupation,viewedProfile}} followUser={followUser}/>
                 </div>
                 <div className='mx-auto left-0 flex flex-col w-full gap-2 items-center overflow-y-scroll no-scrollbar'>
                     <UploadPostCard avatar={avatar} getPosts={getPosts}/>

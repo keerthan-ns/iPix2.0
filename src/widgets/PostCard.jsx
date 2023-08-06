@@ -142,9 +142,9 @@ const PostCard = (props) => {
             <div className="divide-y divide-gray-700 w-full max-w-md py-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700">
                 <div className=' flex flex-row justify-between mx-2 mb-2 items-center'>
                     <div className="flex items-center space-x-4">
-                        <img className="w-14 h-14 rounded-full cursor-pointer" onClick={()=>{navigate(`/${userName}`)}} src={avatar?avatar:"https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png"} alt=""/>
+                        <img className="w-14 h-14 rounded-full cursor-pointer" onClick={()=>{navigate(`/profile/${userName}`)}} src={avatar?avatar:"https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png"} alt=""/>
                         <div className="font-medium dark:text-white ">
-                            <div className='cursor-pointer hover:text-lightB' onClick={()=>{navigate(`/${userName}`)}}>{userName?userName:"loading..."}</div>                            
+                            <div className='cursor-pointer hover:text-lightB' onClick={()=>{navigate(`/profile/${userName}`)}}>{userName?userName:"loading..."}</div>                            
                             <div className="text-xs text-gray-500 dark:text-gray-400 cursor-default">Posted 
                                 {
                                     (getToday() === formatDate(props.post.createdAt)?" Today":" on "+formatDate(props.post.createdAt))

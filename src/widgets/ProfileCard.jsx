@@ -11,8 +11,8 @@ const ProfileCard = (props) => {
     const userId = useSelector((state)=>state.auth.userId)
     const [isFollowing, setIsFollowing] = useState(props.isFollowing)
 
-    const followUser = async(uname)=>{
-        props.followUser(uname)
+    const followUser = async()=>{
+        await props.followUser(props.user.userName)
         isFollowing?setIsFollowing(false):setIsFollowing(true)
     }
 
@@ -54,19 +54,19 @@ const ProfileCard = (props) => {
                     <Users2/>
                     <div className='flex flex-col'>
                         <span className='text-white ml-3 my-auto'>Following : {props.user.following?props.user.following.length:0}</span>
-                        <span className='text-gray-400 ml-3 my-auto'>total views</span>
+                        <span className='text-gray-400 ml-3 my-auto'>Views: {props.user.viewedProfile}</span>
                     </div>
                 </div>
                 {
                     userId==props.user.userId && location.pathname!=`/${props.user.userName}` &&
                     <div className='w-full flex'>
-                        <button onClick={()=>{navigate(`/${props.user.userName}`)}} type="button" className=" w-full text-lightB hover:text-white font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700 dark:focus:ring-white dark:border-white">View full profile</button>
+                        <button onClick={()=>{navigate(`/profile/${props.user.userName}`)}} type="button" className=" w-full text-lightB hover:text-white font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700 dark:focus:ring-white dark:border-white">View full profile</button>
                     </div>
                 }
                 {
                     userId!=props.user.userId? 
                     <div className='w-full flex'>
-                        <button onClick={()=>{followUser(props.user.userName)}} type="button" className=" w-full text-lightB hover:text-white font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700 dark:focus:ring-white dark:border-white">{isFollowing?"Unfollow":"Follow"}</button>
+                        <button onClick={followUser} type="button" className=" w-full text-lightB hover:text-white font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700 dark:focus:ring-white dark:border-white">{isFollowing?"Unfollow":"Follow"}</button>
                     </div>:<></>
                 }
             </div>

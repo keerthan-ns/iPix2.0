@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import BarLoader from '../widgets/BarLoader'
 import ProfileCard from '../widgets/ProfileCard'
 import PostCard from '../widgets/PostCard'
@@ -7,6 +7,7 @@ import Spinner from '../widgets/Spinner'
 import FriendsList from '../widgets/FriendsList'
 
 const ProfilePage = () => {
+    let navigate = useNavigate()
     const {username} = useParams()
     const [fetchingUser, setFetchingUser] = useState(true)
     const [fetchingPosts, setFetchingPosts] = useState(true)
@@ -47,10 +48,25 @@ const ProfilePage = () => {
         setFetchingPosts(false)
     }
 
+    const followUser = async(uname)=>{
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/user/"+uname+"/follow",{
+            method:'PATCH',
+            credentials: 'include',
+        })
+        const json = await response.json()
+        if(json.success){
+            console.log(json.message)//use custom alert later 
+        }
+        else    
+            console.log("ERROR:"+json.message)
+    }
+
     useEffect(() => {
         getUserInfo(username)
         getUserPosts(username)
-    },[])
+        const unlisten = navigate(() => {});
+          return unlisten;
+    },[navigate])
     
     if(fetchingUser)
         return(<BarLoader/>)
@@ -59,7 +75,7 @@ const ProfilePage = () => {
         <>
             <div className='sticky place-self-center w-auto m-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center p-2 gap-2 h-fit lg:h-screen overflow-y-hidden'>
                 <div className='h-fit w-auto md:block'>
-                    <ProfileCard user={userInfo.mergedData} isFollowing={userInfo.isFollowing}/>
+                    <ProfileCard user={userInfo.mergedData} isFollowing={userInfo.isFollowing} followUser={followUser}/>
                 </div>
                 <div className='top-0 mx-auto left-0 flex flex-col w-full gap-2 items-center overflow-y-scroll no-scrollbar'>
                     {

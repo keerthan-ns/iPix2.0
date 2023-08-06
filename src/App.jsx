@@ -40,7 +40,7 @@ function App() {
               <Routes> 
                 <Route exact path='/auth' element={isAuth?<Navigate to='/' replace/>:<Authentication/>}/>
                 <Route exact path='/' element={isAuth?<Home/>:<Navigate to='/auth' replace/>}/>
-                <Route exact path='/:username' element={isAuth?<ProfilePage/>:<Navigate to='/auth' replace/>}/>
+                <Route exact path='/profile/:username' element={isAuth?<ProfilePage/>:<Navigate to='/auth' replace/>}/>
               </Routes> 
             </div>
           </>

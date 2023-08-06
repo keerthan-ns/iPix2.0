@@ -22,7 +22,10 @@ const UserInfoSchema = new mongoose.Schema(
         },
         location : String,
         occupation : String,
-        viewedProfile : Number,
+        viewedProfile : {
+            type: Number,
+            default: 0,
+        }
     },{timestamps:true}
 )
 
