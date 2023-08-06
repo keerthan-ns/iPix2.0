@@ -12,7 +12,7 @@ const UploadPostCard = (props) => {
     const [buttonText, setButtonText] = useState("Upload post")
     const [postData, setPostData] = useState({postText:"",location:""})
     const [postImage, setPostImage] = useState("")
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null)
 
 
     const uploadPostSubmit = async(e)=>{

@@ -57,7 +57,7 @@ router.post('/uploadPost',fetchUser,upload.single('postImage'),[
             let result
             if(req.file && req.file.buffer){
                 result = await new Promise((resolve, reject) => {
-                    cloudinary.uploader.upload_stream({ folder: 'ipix2' }, (error, result) => {
+                    cloudinary.uploader.upload_stream({ folder: 'ipix2/posts' }, (error, result) => {
                     if (error) {
                         reject(error);
                     } else {

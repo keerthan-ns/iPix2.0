@@ -2,6 +2,8 @@ import 'dotenv/config'
 import express from 'express'
 import bcrypt from 'bcrypt'
 import {body,validationResult} from 'express-validator'
+import multer from 'multer'
+import { v2 as cloudinary } from "cloudinary"
 
 import fetchUser from '../middleware/fetchUser.js'
 import User from '../models/User.js'
@@ -120,59 +122,64 @@ router.patch('/:uname/follow',fetchUser,async(req,res)=>{
     }
 })
 
-router.patch('/update/fullName',fetchUser,[
-        body('fullname',"Fullname must contain atleast 3 chars").isLength({ min: 3 })
-    ],async(req,res)=>{
-        try {
-            // if there are errors, return errors
-            const errors = validationResult(req)
-            if(!errors.isEmpty())
-                return res.status(400).json({message:errors.array()[0].msg})
+router.patch('/update/profile',fetchUser,[
+    body('fullname',"Fullname must contain atleast 3 chars").isLength({ min: 3 }),
+    body('location',"Location must contain atleast 3 chars").isLength({ min: 3 }),
+    body('occupation',"Occupation must contain min 3 chars").isLength({ min: 3 })
+],async(req,res)=>{
+    try {
+        // if there are errors, return errors
+        const errors = validationResult(req)
+        if(!errors.isEmpty())
+            return res.status(400).json({message:errors.array()[0].msg})
 
-            const fullname = req.body.fullname
-            const userId = req.user.id
+        const userId = req.user.id
+        const fullname = req.body.fullname
+        const location = req.body.location
+        const occupation = req.body.occupation
 
-            const updatedInfo = await UserInfo.findOneAndUpdate({ userId: userId },{fullName: fullname },{new:true})
-            res.status(200).json({success:true,message:"Updated your name",updatedInfo})
+        const updatedInfo = await UserInfo.findOneAndUpdate({ userId: userId },{fullName: fullname, location: location, occupation: occupation },{new:true})
+        res.status(200).json({success:true,message:"Profile updated",updatedInfo})
 
-        } catch (error) {
-            res.status(404).json({message: error.message})
-        }
+    } catch (error) {
+        res.status(404).json({message: error.message})
+    }
 })
 
-router.patch('/update/location',fetchUser,[
-        body('location',"Location must contain atleast 3 chars").isLength({ min: 3 })
-    ],async(req,res)=>{
-        try {
-            // if there are errors, return errors
-            const errors = validationResult(req)
-            if(!errors.isEmpty())
-                return res.status(400).json({message:errors.array()[0].msg})
 
-            const location = req.body.location
-            const userId = req.user.id
-
-            const updatedInfo = await UserInfo.findOneAndUpdate({ userId: userId },{location: location },{new:true})
-            res.status(200).json({success:true,message:"Updated location",updatedInfo})
-        } catch (error) {
-            res.status(404).json({message: error.message})
-        }
+// set-up required for uploading images
+const storage = multer.memoryStorage()
+const upload = multer({ 
+    storage: storage 
+})
+cloudinary.config({ 
+    cloud_name: process.env.CLOUDINARY_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true
 })
 
-router.patch('/update/occupation',fetchUser,[
-        body('occupation',"Occupation must contain min 3 chars").isLength({ min: 3 })
+router.patch('/update/profilepic',fetchUser,[
     ],async(req,res)=>{
         try {
-            // if there are errors, return errors
-            const errors = validationResult(req)
-            if(!errors.isEmpty())
-                return res.status(400).json({message:errors.array()[0].msg})
-            
-            const occupation = req.body.occupation
+            let success = false
+            // obtained from fetchUSer function
             const userId = req.user.id
-
-            const updatedInfo = await UserInfo.findOneAndUpdate({ userId: userId },{occupation: occupation },{new:true})
-            res.status(200).json({success:true,message:"Updated occupation",updatedInfo})
+            let result
+            if(req.file && req.file.buffer){
+                result = await new Promise((resolve, reject) => {
+                    cloudinary.uploader.upload_stream({ folder: 'ipix2/profilepics' }, (error, result) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result);
+                    }
+                    }).end(req.file.buffer);
+                })
+            }
+            await UserInfo.findOneAndUpdate({ userId: userId },{avatar:result.secure_url },{new:true})
+            success = true
+            res.send({success,message:"Post uploaded successfully",avatar:result.secure_url})
         } catch (error) {
             res.status(404).json({message: error.message})
         }
