@@ -159,8 +159,7 @@ cloudinary.config({
     secure: true
 })
 
-router.patch('/update/profilepic',fetchUser,[
-    ],async(req,res)=>{
+router.post('/update/profilepic',fetchUser,upload.single('updatePic'),async(req,res)=>{
         try {
             let success = false
             // obtained from fetchUSer function
@@ -177,9 +176,9 @@ router.patch('/update/profilepic',fetchUser,[
                     }).end(req.file.buffer);
                 })
             }
-            await UserInfo.findOneAndUpdate({ userId: userId },{avatar:result.secure_url },{new:true})
+            await UserInfo.findOneAndUpdate({ userId: userId },{avatar: result.secure_url },{new:true})
             success = true
-            res.send({success,message:"Post uploaded successfully",avatar:result.secure_url})
+            res.send({success,message:"Profile photo updated",avatar:result.secure_url})
         } catch (error) {
             res.status(404).json({message: error.message})
         }

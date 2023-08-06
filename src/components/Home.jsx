@@ -119,7 +119,7 @@ const Home = () => {
         <>
             <div className='sticky place-self-center w-auto m-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center p-2 gap-2 h-screen overflow-y-hidden'>
                 <div className='hidden w-auto md:block'>
-                    <ProfileCard user={{userId,avatar,userName,fullName,email,location,following,occupation,viewedProfile}} followUser={followUser}/>
+                    <ProfileCard user={{userId,avatar,userName,fullName,email,location,following,occupation,viewedProfile}} getPosts={getPosts} getUserData={getUserdata} followUser={followUser}/>
                 </div>
                 <div className='mx-auto left-0 flex flex-col w-full gap-2 items-center overflow-y-scroll no-scrollbar'>
                     <UploadPostCard avatar={avatar} getPosts={getPosts}/>

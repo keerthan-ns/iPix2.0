@@ -15,6 +15,8 @@ const ProfileCard = (props) => {
     const [selectedImageUpdate, setSelectedImageUpdate] = useState(null)
     const [profileImage, setProfileImage] = useState("")
     const [updateDetails, setUpdateDetails] = useState({upFullname:"",upLocation:"",upOccupation:""})
+    const [buttonText,setButtonText] = useState({updateButton:"Update details",uploadButton:"Upload"})
+    const [disableButton,setDisableButton] = useState(false)
     const [userDetails, setUserDetails] = useState({userId:"",userName:"",email:"",fullName:"",location:"",occupation:"",avatar:""})
     // const [upFullname, setUpFullname] = useState("")
     // const [upLocation, setUpLocation] = useState("")
@@ -60,6 +62,11 @@ const ProfileCard = (props) => {
 
     const handleUpdateForm = async(e)=>{
         e.preventDefault()
+        setDisableButton(true)
+        setButtonText((prevText)=>({
+            ...prevText,
+            updateButton:"Updating.."
+        }))
         const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/user/update/profile",{
             method:'PATCH',
             credentials: 'include',
@@ -80,6 +87,44 @@ const ProfileCard = (props) => {
         }
         else    
             console.log("ERROR:"+json.message)
+        setButtonText((prevText)=>({
+            ...prevText,
+            updateButton:"Update details"
+        }))
+        setDisableButton(false)
+    }
+
+    const handleUpdatePic = async(e)=>{
+        e.preventDefault()
+        setDisableButton(true)
+        setButtonText((prevText)=>({
+            ...prevText,
+            uploadButton:"Uploading.."
+        }))
+        const formData = new FormData()
+        formData.append("updatePic",profileImage)
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/user/update/profilepic",{
+            method:'POST',
+            credentials: 'include',
+            body: formData
+        })
+        const json = await response.json()
+        if(json.success){
+            console.log(json.message)//use custom alert later 
+            setUserDetails((prevDetails)=>({
+                ...prevDetails,
+                avatar:json.avatar
+            }))
+            props.getUserData()
+            props.getPosts()
+        }
+        else    
+            console.log("ERROR:"+json.message)
+        setButtonText((prevText)=>({
+            ...prevText,
+            uploadButton:"Upload"
+        }))
+        setDisableButton(false)
     }
 
     const handleChange=(e)=>{
@@ -180,9 +225,9 @@ const ProfileCard = (props) => {
                                         <div>
                                             <TextInput onChange={handleChange} value={updateDetails.upOccupation} className='w-full' id="upOccupation" name="emailOrUsername" placeholder="Enter occupation" required type="text" />
                                         </div>
-                                        <button type="submit" className=" text-white bg-lightB hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700">Update details</button>
+                                        <button disabled={disableButton} className={`${disableButton?"cursor-not-allowed":""} text-white bg-lightB hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700`}>{buttonText.updateButton}</button>
                                     </form>
-                                    <form className="flex gap-2 items-center justify-center w-full mb-2">
+                                    <form onSubmit={handleUpdatePic}  encType='multipart/form-data' className="flex gap-2 items-center justify-center w-full mb-2">
                                         <label htmlFor="profileImage" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                             <div className="flex flex-col items-center justify-center w-fit h-fit">
                                             {selectedImageUpdate ? (
@@ -198,7 +243,7 @@ const ProfileCard = (props) => {
                                             </div>
                                             <input accept='image/*' onChange={handleImageChangeUpdate} id="profileImage" type="file" className="hidden"/>
                                         </label>
-                                        <button type="button" className=" text-white bg-lightB hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700">Upload</button>
+                                        <button disabled={disableButton} className={`${disableButton?"cursor-not-allowed":""} text-white bg-lightB hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700`}>{buttonText.uploadButton}</button>
                                     </form>
                             </div>
                         </div>
@@ -218,6 +263,8 @@ ProfileCard.propTypes = {
     user: PropTypes.object,
     isFollowing: PropTypes.bool,
     followUser: PropTypes.func,
+    getUserData: PropTypes.func,
+    getPosts: PropTypes.func,
     // avatar: PropTypes.string,
     // userName: PropTypes.string,
     // fullName: PropTypes.string,
