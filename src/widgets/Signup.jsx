@@ -28,10 +28,10 @@ const Signup = (props) => {
         if(json.success){
             console.log(json.message)
             props.setShowLogin(true)
-            // props.showAlert("Success",json.message)
+            props.showAlert(json.success,json.message)
         }
         else{
-            console.log("Error",json.message)
+            props.showAlert(json.success,json.message)
             // props.showAlert("Error",json.message)
         }
         setSigning(false)
@@ -88,4 +88,5 @@ const Signup = (props) => {
 export default Signup
 Signup.propTypes = {
     setShowLogin: PropTypes.func,
+    showAlert: PropTypes.func,
 }

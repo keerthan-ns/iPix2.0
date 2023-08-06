@@ -37,9 +37,13 @@ export default {
           700: '#0e7490',
           950: '#083344',
         },
+        green:{
+          400: '#4ade80',
+        },
+        red:{
+          600: '#dc2626',
+        },
         // Add your custom colors here...
-        // primary: '#ff0000',
-        // secondary: '#00ff00',
         lightB: '#00D5FA',
       },
       extend: {

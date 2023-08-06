@@ -58,6 +58,9 @@ router.get('/:uname',fetchUser,async(req,res)=>{
         const userInfo = await UserInfo.findOne({userId:userId})
         const mergedData = { ...user.toObject(), ...userInfo.toObject()}
 
+        // if(loggedId!=userId)
+        //     await UserInfo.findOneAndUpdate({userId:userId},{ $inc: { viewedProfile: 1 }},{new:true})
+
         // check if logged user if following this user
         const list = await UserInfo.findOne({userId:loggedId}).select("following")
         const isFollowing = list.following.includes(user.userName)
@@ -145,7 +148,6 @@ router.patch('/update/profile',fetchUser,[
         res.status(404).json({message: error.message})
     }
 })
-
 
 // set-up required for uploading images
 const storage = multer.memoryStorage()

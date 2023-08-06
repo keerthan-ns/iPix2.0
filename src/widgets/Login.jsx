@@ -9,6 +9,7 @@ import { setIsAuth } from '../state'
 import { useNavigate } from 'react-router-dom'
 
 const Login = (props) => {
+
     let navigate = useNavigate()
     const [credentials, setCredentials] = useState({emailOrUsername:"thor",password:"thor1234"})
     const [logging, setLogging] = useState(false)
@@ -35,10 +36,12 @@ const Login = (props) => {
         if(json.success){
             dispatch(setIsAuth({isAuth:true}))
             navigate("/")
-            console.log(json.message)//replace with custom alert box
+            // console.log(json.message)//replace with custom alert box
+            props.showAlert(json.success,json.message)
         }
         else{
             console.log("ERROR:"+json.message)     
+            props.showAlert(json.success,json.message)
         }
         setLogging(false)
     }
@@ -89,4 +92,5 @@ export default Login
 
 Login.propTypes = {
     setShowLogin: PropTypes.func,
+    showAlert: PropTypes.func,
 }

@@ -136,18 +136,18 @@ const ProfileCard = (props) => {
     useEffect(() => {
       console.log("PC: "+props)
         setUpdateDetails({
-            upFullname:props.user.fullName,
-            upLocation:props.user.location,
-            upOccupation:props.user.occupation,
+            upFullname:props.user.fullName || "",
+            upLocation:props.user.location || "",
+            upOccupation:props.user.occupation || "",
         })
         setUserDetails({
-            userId:props.user.userId,
-            fullName:props.user.fullName,
-            userName:props.user.userName,
-            email:props.user.email,
-            location:props.user.location,
-            occupation:props.user.occupation,
-            avatar:props.user.avatar,
+            userId:props.user.userId || "",
+            fullName:props.user.fullName || "",
+            userName:props.user.userName || "",
+            email:props.user.email || "",
+            location:props.user.location || "",
+            occupation:props.user.occupation || "",
+            avatar:props.user.avatar || "",
         })
         setSelectedImageUpdate(props.user.avatar)
     }, [props])
@@ -192,6 +192,7 @@ const ProfileCard = (props) => {
                 {
                     userId==userDetails.userId && location.pathname!=`/${userDetails.userName}` &&
                     <div className='w-full flex'>
+                        {/* <button onClick={()=>{navigate(`/profile/${userDetails.userName}`)}} type="button" className=" w-full text-lightB hover:text-white font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700 dark:focus:ring-white dark:border-white">View full profile</button> */}
                         <button onClick={()=>{navigate(`/profile/${userDetails.userName}`)}} type="button" className=" w-full text-lightB hover:text-white font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700 dark:focus:ring-white dark:border-white">View full profile</button>
                     </div>
                 }
