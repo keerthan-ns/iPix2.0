@@ -182,7 +182,7 @@ router.post('/update/profilepic',fetchUser,upload.single('updatePic'),async(req,
             success = true
             res.send({success,message:"Profile photo updated",avatar:result.secure_url})
         } catch (error) {
-            res.status(404).json({message: error.message})
+            res.status(404).json({message: "Change the image and upload"})
         }
 })
 

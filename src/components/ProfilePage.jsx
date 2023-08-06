@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import BarLoader from '../widgets/BarLoader'
 import ProfileCard from '../widgets/ProfileCard'
 import PostCard from '../widgets/PostCard'
 import Spinner from '../widgets/Spinner'
 import FriendsList from '../widgets/FriendsList'
+import alertContext from '../context/alertContext'
+import Alert from '../widgets/Alert'
 
 const ProfilePage = () => {
+    const context = useContext(alertContext)
+    const {alert,showAlert} = context
+
     let navigate = useNavigate()
     const {username} = useParams()
     const [fetchingUser, setFetchingUser] = useState(true)
@@ -56,9 +61,11 @@ const ProfilePage = () => {
         const json = await response.json()
         if(json.success){
             console.log(json.message)//use custom alert later 
+            showAlert(json.success,json.message)
         }
         else    
-            console.log("ERROR:"+json.message)
+            showAlert(json.success,json.message)
+            // console.log("ERROR:"+json.message)
     }
 
     useEffect(() => {
@@ -73,6 +80,7 @@ const ProfilePage = () => {
 
     return (
         <>
+            <Alert alert={alert}/>
             <div className='sticky place-self-center w-auto m-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center p-2 gap-2 h-fit lg:h-screen overflow-y-hidden'>
                 <div className='h-fit w-auto md:block'>
                     <ProfileCard user={userInfo.mergedData} isFollowing={userInfo.isFollowing} followUser={followUser}/>

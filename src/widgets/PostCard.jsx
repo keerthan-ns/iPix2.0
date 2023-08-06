@@ -44,13 +44,13 @@ const PostCard = (props) => {
         })
         const json = await response.json()
         if(json.success){
-            console.log(json.message)
+            props.showAlert(json.success,json.message)
             setCommentList((commentList)=>[...commentList,json.newComment])
             setCommentText("")
             toggleCommentModal()
         }
         else{
-            console.log("ERROR:"+json.message)     
+            props.showAlert(json.success,json.message)   
         }
         setCommenting(false)
     }
@@ -65,12 +65,12 @@ const PostCard = (props) => {
         })
         const json = await response.json()
         if(json.success){
-            console.log(json.message)
+            props.showAlert(json.success,json.message)
             isLiked?setLikeCount(likeCount-1):setLikeCount(likeCount+1)
             isLiked?setIsLiked(false):(setIsLiked(true))
         }
         else
-            console.log("ERROR:"+json.message) 
+            props.showAlert(json.success,json.message) 
     }
 
     const followUser=async()=>{
@@ -220,4 +220,5 @@ export default PostCard
 PostCard.propTypes = {
     post: PropTypes.object,
     followUser: PropTypes.func,
+    showAlert: PropTypes.func,
 }

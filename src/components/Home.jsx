@@ -12,7 +12,6 @@ import alertContext from '../context/alertContext'
 import Alert from '../widgets/Alert'
 
 const Home = (props) => {
-
     const context = useContext(alertContext)
     const {alert,showAlert} = context
 
@@ -41,12 +40,11 @@ const Home = (props) => {
         })
         const json = await response.json()
         if(json.success){
-            console.log(json)
             initData(json.mergedData)
             getfollowings()
         }
-        else{
-            console.log("ERROR:"+json.message)     
+        else{    
+            showAlert(json.success,json.message)
         }
     }
 
@@ -60,11 +58,10 @@ const Home = (props) => {
         })
         const json = await response.json()
         if(json.success){
-            console.log(json)
             setFollowing(json.following.following)
         }
         else{
-            console.log("ERROR:"+json.message)     
+            showAlert(json.success,json.message)   
         }
     }
 
@@ -82,7 +79,7 @@ const Home = (props) => {
             setPosts(json.posts)
         }
         else{
-            console.log("ERROR:"+json.message)     
+            showAlert(json.success,json.message)     
         }
         setFetchingPosts(false)
     }
@@ -93,12 +90,12 @@ const Home = (props) => {
             credentials: 'include',
         })
         const json = await response.json()
-        if(json.success){
-            console.log(json.message)//use custom alert later 
+        if(json.success){ 
+            showAlert(json.success,json.message)
             getfollowings()
         }
-        else    
-            console.log("ERROR:"+json.message)
+        else  
+            showAlert(json.success,json.message)  
     }
 
     const initData=async (userData)=>{
@@ -128,7 +125,7 @@ const Home = (props) => {
             <Alert alert={alert}/>
             <div className='sticky place-self-center w-auto m-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center p-2 gap-2 h-screen overflow-y-hidden'>
                 <div className='hidden w-auto md:block'>
-                    <ProfileCard user={{userId,avatar,userName,fullName,email,location,following,occupation,viewedProfile}} getPosts={getPosts} getUserData={getUserdata} followUser={followUser}/>
+                    <ProfileCard user={{userId,avatar,userName,fullName,email,location,following,occupation,viewedProfile}} getPosts={getPosts} getUserData={getUserdata} followUser={followUser} showAlert={showAlert}/>
                 </div>
                 <div className='mx-auto left-0 flex flex-col w-full gap-2 items-center overflow-y-scroll no-scrollbar'>
                     <UploadPostCard avatar={avatar} getPosts={getPosts}/>
@@ -138,7 +135,7 @@ const Home = (props) => {
                         <>
                             {
                                 posts?.map((post)=>{
-                                    return <PostCard key={post._id} post={post} followUser={followUser}/>
+                                    return <PostCard key={post._id} post={post} followUser={followUser} showAlert={showAlert}/>
                                 })
                             }
                         </>

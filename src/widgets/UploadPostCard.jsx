@@ -1,10 +1,15 @@
 import { Image, MapPin, MapPinOff } from 'lucide-react'
-import {useRef, useState} from 'react'
+import {useContext, useRef, useState} from 'react'
 import Spinner from './Spinner'
 import PropTypes from "prop-types"
 import Compressor from 'compressorjs'
+import alertContext from '../context/alertContext'
+import Alert from './Alert'
 
 const UploadPostCard = (props) => {
+    const context = useContext(alertContext)
+    const {alert,showAlert} = context
+
     const uploadForm = useRef(null)
     const [uploadImage, setUploadImage] = useState(false)
     const [addLocation, setAddLocation] = useState(false)
@@ -33,12 +38,12 @@ const UploadPostCard = (props) => {
             })
             const json = await response.json()
             if(json.success){
-                console.log(json.message)//replace with custom alert box
+                showAlert(json.success,json.message)
                 setPostData({postText:"",location:""})
                 props.getPosts()
             }
             else{
-                console.log("ERROR:"+json.message)//replace with custom alert box
+                showAlert(json.success,json.message)
             }
             setSelectedImage(null)
             uploadForm.current.reset()
@@ -75,7 +80,7 @@ const UploadPostCard = (props) => {
         const file = event.target.files[0]
         // handler if user selects other file than image/*
         if (!file.type.startsWith('image/')) {
-            alert('Please select an image file (e.g., PNG, JPG, GIF).') //replace with custom alert box
+            showAlert(false,"Please select an image file (e.g., PNG, JPG, GIF).")
             event.target.value = null // Reset the input value to clear the selected file
             return
         }
@@ -103,6 +108,7 @@ const UploadPostCard = (props) => {
 
     return (
         <>
+            <Alert alert={alert}/>
             <div className="divide-y divide-gray-700 w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700">        
                 <form ref={uploadForm} onSubmit={uploadPostSubmit} encType='multipart/form-data'>
                     <div className='flex flex-col'>

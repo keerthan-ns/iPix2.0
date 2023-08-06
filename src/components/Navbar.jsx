@@ -2,12 +2,17 @@ import {Link,useLocation, useNavigate} from 'react-router-dom'
 import { BellDot, Home, FlameIcon, LogOut, UserCircle2, Search, X } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { setIsAuth, setUserId } from '../state';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button, Label, TextInput, Textarea } from 'flowbite-react';
 import UserTiles from '../widgets/UserTiles';
 import Spinner from '../widgets/Spinner';
+import alertContext from '../context/alertContext';
+import Alert from '../widgets/Alert';
 
 const Navbar = () => {
+    const context = useContext(alertContext)
+    const {alert,showAlert} = context
+
     let navigate = useNavigate()
     let location = useLocation()
     const dispatch = useDispatch()
@@ -41,10 +46,10 @@ const Navbar = () => {
                 dispatch(setUserId({userID:null}))
                 localStorage.removeItem("reduxState")
                 navigate("/auth")
-                console.log(json.message)//replace with custom alert box
+                showAlert(json.success,json.message)
             }
             else
-            console.log(json.message)
+                showAlert(json.success,json.message)
         } catch (error) {
             console.error('Error parsing response as JSON:', error);
         }
@@ -116,6 +121,7 @@ const Navbar = () => {
     
   return (
     <>
+        <Alert alert={alert}/>
         <div className='fixed w-screen z-20 top-0 left-0 pt-4 px-2 md:px-4 bg-gray-950'>
             <nav className=" rounded-lg border border-lightB bg-white dark:bg-gray-950 shadow-lightB shadow-md bg-opacity-20 backdrop-blur-lg">
                 <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-3">

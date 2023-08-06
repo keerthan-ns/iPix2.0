@@ -74,10 +74,10 @@ router.post('/login',[
     try{
         let user = await User.findOne({ $or: [{ email: emailOrUsername }, { userName: emailOrUsername }] })
         if(!user)
-            return res.status(400).json({error:"Please login through valid credentials"})
+            return res.status(400).json({success,message:"Please login through valid credentials"})
         const passwordCompare = await bcrypt.compare(password,user.password)
         if(!passwordCompare)
-            return res.status(400).json({error:"Please login through valid credentials"})
+            return res.status(400).json({success,message:"Please login through valid credentials"})
         
             const data = {
                 user:{

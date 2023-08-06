@@ -35,7 +35,7 @@ const ProfileCard = (props) => {
         const file = event.target.files[0]
         // handler if user selects other file than image/*
         if (!file.type.startsWith('image/')) {
-            alert('Please select an image file (e.g., PNG, JPG, GIF).') //replace with custom alert box
+            props.showAlert(false,'Please select an image file (e.g., PNG, JPG, GIF).')
             event.target.value = null // Reset the input value to clear the selected file
             return
         }
@@ -77,16 +77,18 @@ const ProfileCard = (props) => {
         })
         const json = await response.json()
         if(json.success){
-            console.log(json.message)//use custom alert later 
+            props.showAlert(json.success,json.message)
             setUserDetails((prevDetails)=>({
                 ...prevDetails,
                 fullName:updateDetails.upFullname,
                 location:updateDetails.upLocation,
                 occupation:updateDetails.upOccupation,
             }))
+            props.getUserData()
+            props.getPosts()
         }
         else    
-            console.log("ERROR:"+json.message)
+            props.showAlert(json.success,json.message)
         setButtonText((prevText)=>({
             ...prevText,
             updateButton:"Update details"
@@ -110,7 +112,7 @@ const ProfileCard = (props) => {
         })
         const json = await response.json()
         if(json.success){
-            console.log(json.message)//use custom alert later 
+            props.showAlert(json.success,json.message)
             setUserDetails((prevDetails)=>({
                 ...prevDetails,
                 avatar:json.avatar
@@ -119,7 +121,8 @@ const ProfileCard = (props) => {
             props.getPosts()
         }
         else    
-            console.log("ERROR:"+json.message)
+            props.showAlert(json.success,json.message)
+            // console.log("ERROR:"+json.message)
         setButtonText((prevText)=>({
             ...prevText,
             uploadButton:"Upload"
@@ -134,7 +137,6 @@ const ProfileCard = (props) => {
     }
 
     useEffect(() => {
-      console.log("PC: "+props)
         setUpdateDetails({
             upFullname:props.user.fullName || "",
             upLocation:props.user.location || "",
@@ -266,6 +268,7 @@ ProfileCard.propTypes = {
     followUser: PropTypes.func,
     getUserData: PropTypes.func,
     getPosts: PropTypes.func,
+    showAlert: PropTypes.func,
     // avatar: PropTypes.string,
     // userName: PropTypes.string,
     // fullName: PropTypes.string,
