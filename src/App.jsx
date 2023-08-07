@@ -12,6 +12,7 @@ import AlertState from "./context/AlertState"
 
 function App() {
   const isAuth = useSelector((state)=>state.auth.isAuth)
+  const [username, setUsername] = useState("")
   // const context = useContext(alertContext)
   // const {alert,setAlert,showAlert} = context
   // const [alert, setAlert] = useState(null)
@@ -51,11 +52,11 @@ function App() {
         <Router>
           {(
             <>
-              {isAuth && <Navbar/>}
+              {isAuth && <Navbar username={username}/>}
               <div className={`container ${isAuth?'mt-24 lg:mt-28 ':''}  mx-auto`}>
                 <Routes> 
                   <Route exact path='/auth' element={isAuth?<Navigate to='/' replace/>:<Authentication/>}/>
-                  <Route exact path='/' element={isAuth?<Home/>:<Navigate to='/auth' replace/>}/>
+                  <Route exact path='/' element={isAuth?<Home setUsername={setUsername}/>:<Navigate to='/auth' replace/>}/>
                   <Route exact path='/profile/:username' element={isAuth?<ProfilePage/>:<Navigate to='/auth' replace/>}/>
                 </Routes> 
               </div>

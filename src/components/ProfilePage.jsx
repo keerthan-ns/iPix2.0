@@ -81,7 +81,7 @@ const ProfilePage = () => {
     return (
         <>
             <Alert alert={alert}/>
-            <div className='sticky place-self-center w-auto m-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center p-2 gap-2 h-fit lg:h-screen overflow-y-hidden'>
+            <div className='sticky place-self-center w-auto m-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center p-2 gap-2 h-fit md:h-screen overflow-y-hidden'>
                 <div className='h-fit w-auto md:block'>
                     <ProfileCard user={userInfo.mergedData} isFollowing={userInfo.isFollowing} followUser={followUser}/>
                 </div>

@@ -7,9 +7,10 @@ import { Button, Label, TextInput, Textarea } from 'flowbite-react';
 import UserTiles from '../widgets/UserTiles';
 import Spinner from '../widgets/Spinner';
 import alertContext from '../context/alertContext';
-import Alert from '../widgets/Alert';
+import Alert from '../widgets/Alert'
+import PropTypes from "prop-types"
 
-const Navbar = () => {
+const Navbar = (props) => {
     const context = useContext(alertContext)
     const {alert,showAlert} = context
 
@@ -18,7 +19,6 @@ const Navbar = () => {
     const dispatch = useDispatch()
     const [searchList, setSearchList] = useState([])
     const [searchText, setSearchText] = useState('')
-    const [hideOptions, setHideOptions] = useState(true)
     const [isSearching, setIsSearching] = useState(false)
     
     const toggleOptions=()=>{
@@ -179,7 +179,7 @@ const Navbar = () => {
                                     <div id="options" className="absolute hidden  z-10 top-14 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                                         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
                                             <li>
-                                                <Link onClick={()=>{navigate('/');toggleOptions()}} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">View profile</Link>
+                                                <Link onClick={()=>{navigate(`/${props.username}`);}} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">View profile</Link>
                                             </li>
                                             <li>
                                                 <Link onClick={handleLogout} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Logout</Link>
@@ -273,3 +273,7 @@ const Navbar = () => {
 }
 
 export default Navbar
+
+Navbar.propTypes = {
+    username: PropTypes.string,
+}
