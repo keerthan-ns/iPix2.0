@@ -2,19 +2,19 @@ import {useState,useEffect} from 'react'
 import { Button, Label, TextInput } from 'flowbite-react'
 import PropTypes from "prop-types"
 import { Eye,EyeOff } from 'lucide-react'
-
-import Spinner from './Spinner'
 import { useDispatch } from 'react-redux'
-import { setIsAuth } from '../state'
 import { useNavigate } from 'react-router-dom'
 
-const Login = (props) => {
+import Spinner from './Spinner'
+import { setIsAuth } from '../state'
 
+const Login = (props) => {
     let navigate = useNavigate()
+    const dispatch = useDispatch()
+
     const [credentials, setCredentials] = useState({emailOrUsername:"thor",password:"thor1234"})
     const [logging, setLogging] = useState(false)
     const [isPassword, setIsPassword] = useState(true)
-    const dispatch = useDispatch()
 
     useEffect(() => {
         setLogging(false)
@@ -36,7 +36,6 @@ const Login = (props) => {
         if(json.success){
             dispatch(setIsAuth({isAuth:true}))
             navigate("/")
-            // console.log(json.message)//replace with custom alert box
             props.showAlert(json.success,json.message)
         }
         else{

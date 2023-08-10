@@ -23,6 +23,8 @@ router.get('/getfollowings',fetchUser,async (req,res)=>{
     }
 })
 
+
+// not implemented
 router.patch('/update/password',fetchUser,[
     body('password',"Min password length must be 6").isLength({ min: 6 })
 ],async(req,res)=>{

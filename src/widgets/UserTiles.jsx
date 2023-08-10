@@ -2,31 +2,17 @@ import { UserMinus2, UserPlus2 } from 'lucide-react'
 import PropTypes from "prop-types"
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const UserTiles = (props) => {
+    let navigate = useNavigate()
     const userId = useSelector((state)=>state.auth.userId)
+
     const [isFollowing, setIsFollowing] = useState(true)
     const [userName, setUserName] = useState("")
     const [userID, setUserID] = useState("")
     const [fullName, setFullName] = useState("")
     const [avatar, setAvatar] = useState("")
-    let navigate = useNavigate()
-
-    // const unfollow = async()=>{
-    //     const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/user/"+props.userName+"/follow",{
-    //         method:'PATCH',
-    //         headers:{
-    //             'Content-type':'application/json',
-    //         },
-    //         credentials: 'include',
-    //     })
-    //     const json = await response.json()
-    //     if(json.success){
-    //         console.log(json.message)
-    //     }else
-    //         console.log("Error:"+json.message)
-    // }
 
     const getuser=async ()=>{
         const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/user/"+props.userName,{
@@ -79,8 +65,6 @@ const UserTiles = (props) => {
 export default UserTiles
 
 UserTiles.propTypes = {
-    // avatar: PropTypes.string,
     userName: PropTypes.string,
     followUser: PropTypes.func,
-    // fullName: PropTypes.string,
 }

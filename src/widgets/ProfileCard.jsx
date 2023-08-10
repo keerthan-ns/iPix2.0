@@ -1,4 +1,4 @@
-import { CreditCard, MapPin, UserCog2, UserMinus2, UserPlus2, Users2 } from 'lucide-react'
+import { CreditCard, MapPin, UserCog2, Users2 } from 'lucide-react'
 import PropTypes from "prop-types"
 import { useState } from 'react'
 import { useEffect } from 'react'
@@ -11,6 +11,7 @@ import { Label, TextInput } from 'flowbite-react'
 const ProfileCard = (props) => {
     let navigate = useNavigate()
     const userId = useSelector((state)=>state.auth.userId)
+
     const [isFollowing, setIsFollowing] = useState(props.isFollowing)
     const [selectedImageUpdate, setSelectedImageUpdate] = useState(null)
     const [profileImage, setProfileImage] = useState("")
@@ -18,9 +19,6 @@ const ProfileCard = (props) => {
     const [buttonText,setButtonText] = useState({updateButton:"Update details",uploadButton:"Upload"})
     const [disableButton,setDisableButton] = useState(false)
     const [userDetails, setUserDetails] = useState({userId:"",userName:"",email:"",fullName:"",location:"",occupation:"",avatar:""})
-    // const [upFullname, setUpFullname] = useState("")
-    // const [upLocation, setUpLocation] = useState("")
-    // const [upOccupation, setUpOccupation] = useState("")
 
     const followUser = async()=>{
         await props.followUser(props.user.userName)
@@ -122,7 +120,7 @@ const ProfileCard = (props) => {
         }
         else    
             props.showAlert(json.success,json.message)
-            // console.log("ERROR:"+json.message)
+        
         setButtonText((prevText)=>({
             ...prevText,
             uploadButton:"Upload"
@@ -159,7 +157,6 @@ const ProfileCard = (props) => {
         <div className="divide-y divide-gray-700  p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700">        
             <div className=' flex flex-row justify-between mb-2 px-3'>
                 <div className="flex items-center space-x-4">
-                    {/* <img className="w-20 h-20 rounded-full" src="https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png" alt=""/> */}
                     <img className="w-20 h-20 rounded-full" src={userDetails.avatar?userDetails.avatar:"https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png"} alt=""/>
                     <div className="font-medium dark:text-white overflow-clip">
                         <div>{userDetails.userName}</div>
@@ -194,7 +191,6 @@ const ProfileCard = (props) => {
                 {
                     userId==userDetails.userId && location.pathname!=`/${userDetails.userName}` &&
                     <div className='w-full flex'>
-                        {/* <button onClick={()=>{navigate(`/profile/${userDetails.userName}`)}} type="button" className=" w-full text-lightB hover:text-white font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700 dark:focus:ring-white dark:border-white">View full profile</button> */}
                         <button onClick={()=>{navigate(`/profile/${userDetails.userName}`)}} type="button" className=" w-full text-lightB hover:text-white font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700 dark:focus:ring-white dark:border-white">View full profile</button>
                     </div>
                 }
@@ -278,10 +274,4 @@ ProfileCard.propTypes = {
     getUserData: PropTypes.func,
     getPosts: PropTypes.func,
     showAlert: PropTypes.func,
-    // avatar: PropTypes.string,
-    // userName: PropTypes.string,
-    // fullName: PropTypes.string,
-    // email: PropTypes.string,
-    // location: PropTypes.string,
-    // occupation: PropTypes.string,
 }

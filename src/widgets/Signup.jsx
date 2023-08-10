@@ -32,7 +32,6 @@ const Signup = (props) => {
         }
         else{
             props.showAlert(json.success,json.message)
-            // props.showAlert("Error",json.message)
         }
         setSigning(false)
     }

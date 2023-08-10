@@ -1,20 +1,19 @@
 import { useContext, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
 import ProfileCard from '../widgets/ProfileCard'
 import UploadPostCard from '../widgets/UploadPostCard'
 import PostCard from '../widgets/PostCard'
 import FriendsList from '../widgets/FriendsList'
 import BarLoader from '../widgets/BarLoader'
 import Spinner from '../widgets/Spinner'
-import { useDispatch, useSelector } from 'react-redux'
 import { setUserId, setUName } from '../state'
 import alertContext from '../context/alertContext'
 import Alert from '../widgets/Alert'
-import PropTypes from "prop-types"
 
-const Home = (props) => {
+const Home = () => {
     const context = useContext(alertContext)
     const {alert,showAlert} = context
-
     const dispatch = useDispatch()
     const userId = useSelector((state)=>state.auth.userId)
 
@@ -101,7 +100,6 @@ const Home = (props) => {
     const initData=async (userData)=>{
         dispatch(setUserId({userId:userData._id}))
         dispatch(setUName({uName:userData.userName}))
-        // props.setUsername(userData.userName)
         setAvatar(userData.avatar)
         setFullName(userData.fullName)
         setUserName(userData.userName)
@@ -109,7 +107,6 @@ const Home = (props) => {
         setLocation(userData.location)
         setOccupation(userData.occupation)
         setViewedProfile(userData.viewedProfile)
-        // props.showAlert(false,"hello working error")
     }
 
     useEffect(() => {
@@ -152,7 +149,3 @@ const Home = (props) => {
 }
 
 export default Home
-
-// Home.propTypes = {
-//     setUsername: PropTypes.func,
-// }

@@ -1,22 +1,22 @@
-import { Heart, MapPin, MessageSquare, Navigation, PlusCircle, SendHorizonal, Share2Icon, UserCog2, UserMinus2, UserPlus2, XCircle } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import { Heart, MapPin, MessageSquare, PlusCircle, SendHorizonal, Share2Icon, XCircle } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import PropTypes from "prop-types"
 import { useSelector } from 'react-redux'
 import {  useNavigate } from 'react-router-dom'
 
 const PostCard = (props) => {
     let navigate = useNavigate()
+    const userId = useSelector((state)=>state.auth.userId)
+
     const [isFollowing, setIsFollowing] = useState(true)
     const [isLiked, setIsLiked] = useState(false)
     const [likeCount, setLikeCount] = useState(0)
     const [commentText, setCommentText] = useState("")
     const [commentList, setCommentList] = useState([])
     const [commenting, setCommenting] = useState(false)
-    
     const [userName, setUserName] = useState("")
     const [avatar, setAvatar] = useState("")
 
-    const userId = useSelector((state)=>state.auth.userId)
 
     const toggleCommentList=()=>{
         document.getElementById(props.post._id).classList.toggle('hidden')
@@ -71,11 +71,6 @@ const PostCard = (props) => {
         }
         else
             props.showAlert(json.success,json.message) 
-    }
-
-    const followUser=async()=>{
-        await props.followUser(userName)
-        isFollowing?setIsFollowing(false):setIsFollowing(true)
     }
 
     const getuser=async (userId)=>{
@@ -152,12 +147,6 @@ const PostCard = (props) => {
                             </div>
                         </div>
                     </div>
-                    {/* {
-                        props.post.userId!=userId?
-                        <div onClick={followUser} className='h-fit flex p-2 items-center rounded-full text-lightB hover:text-white dark:bg-cyan-950 dark:hover:bg-cyan-700'>
-                            {isFollowing?<UserMinus2/>:<UserPlus2/>}
-                        </div>:<></>
-                    } */}
                 </div>
                 <div className='h-auto max-w-full mx-2 my-2 px-2 py-2 border-separate border border-white rounded-md'>
                     <p className='text-sm text-white text-justify'>{props.post.postText}</p>

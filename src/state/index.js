@@ -19,18 +19,6 @@ export const authSlice = createSlice({
         setUName:(state,action)=>{
             state.uName = action.payload.uName;
         },
-        // setLogin:(state,action)=>{
-        //     state.user = action.payload.user
-        // },
-        // setLogout:(state)=>{
-        //     state.user = null           
-        // },
-        // setFriends: (state, action) => {
-        //     if (state.user) 
-        //       state.user.friends = action.payload.friends
-        //     else 
-        //       console.error("user friends non-existent :(")
-        // },
     }
 })
 

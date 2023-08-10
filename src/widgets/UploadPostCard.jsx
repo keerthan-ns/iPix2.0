@@ -1,16 +1,17 @@
 import { Image, MapPin, MapPinOff } from 'lucide-react'
 import {useContext, useRef, useState} from 'react'
-import Spinner from './Spinner'
 import PropTypes from "prop-types"
 import Compressor from 'compressorjs'
+
+import Spinner from './Spinner'
 import alertContext from '../context/alertContext'
 import Alert from './Alert'
 
 const UploadPostCard = (props) => {
     const context = useContext(alertContext)
     const {alert,showAlert} = context
-
     const uploadForm = useRef(null)
+
     const [uploadImage, setUploadImage] = useState(false)
     const [addLocation, setAddLocation] = useState(false)
     const [processing, setProcessing] = useState(false)
@@ -55,20 +56,6 @@ const UploadPostCard = (props) => {
             console.log(error)
         }
     }
-
-    // fucntion for client side image uploading [NOT USED]
-    // const uploadImageCloudinary=async(imageFile)=>{
-    //     const formData = new FormData()
-    //     formData.append("file",imageFile)
-    //     formData.append("upload_preset",your_cloud_preset)
-
-    //     const response = await fetch("https://api.cloudinary.com/v1_1/:cloud_name/image/upload",{
-    //         method:'POST',
-    //         body: formData
-    //     })
-    //     const json = await response.json()
-    //     return json.secure_url
-    // }
 
     const handleChange=(e)=>{
         setPostData({
@@ -154,10 +141,6 @@ const UploadPostCard = (props) => {
                             </div>                        
                         }
                     </div>
-                    {/* <div onClick={()=>{addLocation?setAddLocation(false):setAddLocation(true)}} className='pl-2 flex items-center justify-left text-white gap-1'>
-                        <MapPin/>
-                        <span className='text-sm font-semibold'>Location</span>
-                    </div> */}
                     <div className='pt-2 flex flex-row justify-between text-gray-500  divide-x divide-gray-700'>
                         <div onClick={()=>{uploadImage?setUploadImage(false):setUploadImage(true)}} className='flex flex-row gap-2 items-center content-center'>
                             <Image/>
@@ -179,16 +162,3 @@ UploadPostCard.propTypes = {
     avatar: PropTypes.string,
     getPosts: PropTypes.func,
 }
-
-{/* <div className="flex items-center justify-center w-full mb-2" onClick={()=>{console.log("fle")}}>
-                                <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                        <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                                        </svg>
-                                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-                                    </div>
-                                    <input id="postImage" type="file" className="hidden" />
-                                </label>
-                            </div>  */}

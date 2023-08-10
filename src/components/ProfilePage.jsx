@@ -1,5 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { Users2 } from 'lucide-react'
+
 import BarLoader from '../widgets/BarLoader'
 import ProfileCard from '../widgets/ProfileCard'
 import PostCard from '../widgets/PostCard'
@@ -7,7 +9,6 @@ import Spinner from '../widgets/Spinner'
 import FriendsList from '../widgets/FriendsList'
 import alertContext from '../context/alertContext'
 import Alert from '../widgets/Alert'
-import { Users2 } from 'lucide-react'
 
 const ProfilePage = () => {
     const context = useContext(alertContext)
@@ -32,7 +33,6 @@ const ProfilePage = () => {
         })
         const json = await response.json()
         setUserInfo(json)
-        // console.log(json)
         setFetchingUser(false)
     }
 
@@ -67,7 +67,6 @@ const ProfilePage = () => {
         }
         else    
             showAlert(json.success,json.message)
-            // console.log("ERROR:"+json.message)
     }
 
     useEffect(() => {

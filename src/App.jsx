@@ -1,50 +1,15 @@
-import { BrowserRouter as Router,  Route, Routes, Navigate, useLocation } from "react-router-dom"
+import { BrowserRouter as Router,  Route, Routes, Navigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 
 import { Authentication } from './components/Authentication'
 import Navbar from './components/Navbar'
 import Home from "./components/Home"
 import ProfilePage from "./components/ProfilePage"
-import Alert from "./widgets/Alert"
-import { useContext, useState } from "react"
 import AlertState from "./context/AlertState"
-// import alertContext from "./context/alertContext"
 
 function App() {
+  // access isAuth state from the redux store
   const isAuth = useSelector((state)=>state.auth.isAuth)
-  // const context = useContext(alertContext)
-  // const {alert,setAlert,showAlert} = context
-  // const [alert, setAlert] = useState(null)
-  // const showAlert = (success,message) =>{
-  //   setAlert({
-  //     success: success,
-  //     message: message,
-  //   })
-  //   setTimeout(() => {
-  //     setAlert(null)
-  //   }, 2000);
-  // }
-  // let navigate = useNavigate()
-  // {
-  //   !isAuth &&
-  //     <Router>
-  //       <Routes>
-  //         <Route exact path="/auth" element={<Authentication/>}/>
-  //       </Routes>
-  //     </Router>
-  //     {navigate('/auth')}
-    
-  // }
-  {/* <div className={`container ${isAuth?'mt-24 lg:mt-28 mb-3':''}  mx-auto`}>
-    <Authentication/>
-  </div> */}
-  {/* 
-    <Routes>
-      <Route exact path="/auth" element={<Authentication />} />
-    </Routes>
-    {!isAuth && <Navigate to="/auth" replace/>}  
-    */}
-
   return (
     <>
       <AlertState>
