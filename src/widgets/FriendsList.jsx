@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import UserTiles from './UserTiles'
 import PropTypes from "prop-types"
 

@@ -8,7 +8,6 @@ const PostCard = (props) => {
     let navigate = useNavigate()
     const userId = useSelector((state)=>state.auth.userId)
 
-    const [isFollowing, setIsFollowing] = useState(true)
     const [isLiked, setIsLiked] = useState(false)
     const [likeCount, setLikeCount] = useState(0)
     const [commentText, setCommentText] = useState("")
@@ -82,7 +81,6 @@ const PostCard = (props) => {
             credentials: 'include',
         })
         const json = await response.json()
-        setIsFollowing(json.isFollowing)
         setAvatar(json.mergedData.avatar)
         setUserName(json.mergedData.userName)
     }
