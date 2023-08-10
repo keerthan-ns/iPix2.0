@@ -10,7 +10,7 @@ const FriendsList = (props) => {
   
   return (
     <>
-        <div className="divide-y divide-gray-700 w-auto p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700">        
+        <div className="divide-y divide-gray-700 w-auto p-4 bg-white border  lg:max-h-[60%] lg:overflow-y-scroll no-scrollbar border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700">        
             <h2 className='text-lightB text-sm font-semibold mb-1'>Friends list</h2>
             <div className="flow-root">
                 <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">

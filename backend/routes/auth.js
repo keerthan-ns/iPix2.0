@@ -50,7 +50,7 @@ router.post('/register',[
             const authtoken = jwt.sign(data,JWT_SECRET)
             success = true
             // new user stored is returned back
-            res.cookie("authtoken",authtoken,{httpOnly: true}).json({success,message:"Account created successfully"})
+            res.cookie("authtoken",authtoken,{httpOnly: true}).json({success,message:"Account registered"})
 
             // res.json(user)
         }catch(error){
@@ -119,7 +119,7 @@ router.post('/getuser',fetchUser,async (req,res)=>{
 router.get('/logout',fetchUser,async(req,res)=>{
     try{
         res.clearCookie('authtoken')
-        res.json({success:true,message:"Logged out successfully !!"})
+        res.json({success:true,message:"You are logged out !!"})
     }catch(error){
         res.status(500).send("Internal server error")
     }

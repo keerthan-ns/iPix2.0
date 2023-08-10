@@ -6,7 +6,7 @@ import FriendsList from '../widgets/FriendsList'
 import BarLoader from '../widgets/BarLoader'
 import Spinner from '../widgets/Spinner'
 import { useDispatch, useSelector } from 'react-redux'
-import { setUserId } from '../state'
+import { setUserId, setUName } from '../state'
 import alertContext from '../context/alertContext'
 import Alert from '../widgets/Alert'
 import PropTypes from "prop-types"
@@ -100,7 +100,8 @@ const Home = (props) => {
 
     const initData=async (userData)=>{
         dispatch(setUserId({userId:userData._id}))
-        props.setUsername(userData.userName)
+        dispatch(setUName({uName:userData.userName}))
+        // props.setUsername(userData.userName)
         setAvatar(userData.avatar)
         setFullName(userData.fullName)
         setUserName(userData.userName)
@@ -152,6 +153,6 @@ const Home = (props) => {
 
 export default Home
 
-Home.propTypes = {
-    setUsername: PropTypes.func,
-}
+// Home.propTypes = {
+//     setUsername: PropTypes.func,
+// }

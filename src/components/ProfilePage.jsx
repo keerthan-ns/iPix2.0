@@ -7,10 +7,12 @@ import Spinner from '../widgets/Spinner'
 import FriendsList from '../widgets/FriendsList'
 import alertContext from '../context/alertContext'
 import Alert from '../widgets/Alert'
+import { Users2 } from 'lucide-react'
 
 const ProfilePage = () => {
     const context = useContext(alertContext)
     const {alert,showAlert} = context
+    const [switchList, setSwitchList] = useState(false)
 
     let navigate = useNavigate()
     const {username} = useParams()
@@ -30,7 +32,7 @@ const ProfilePage = () => {
         })
         const json = await response.json()
         setUserInfo(json)
-        console.log(json)
+        // console.log(json)
         setFetchingUser(false)
     }
 
@@ -95,14 +97,19 @@ const ProfilePage = () => {
                             }
                             {
                                 posts?.map((post)=>{
-                                    return <PostCard key={post._id} post={post}/>
+                                    return <PostCard key={post._id} post={post} showAlert={showAlert}/>
                                 })
                             }
                         </>
                     } 
                 </div>
-                <div className='hidden w-auto lg:block cursor-default'>
+                <div id='friendListDiv' className={`${switchList?'fixed w-full pr-4 max-h-[75%] overflow-y-scroll mx-auto':'hidden w-auto'} lg:block cursor-default`}>
                     <FriendsList following={userInfo.mergedData.following}/>
+                </div>
+                <div className='fixed bottom-0 mr-4 mb-4 w-fit right-0'>
+                    <button onClick={()=>{switchList?setSwitchList(false):setSwitchList(true);document.getElementById('friendListDiv').classList.toggle("hidden");}} type="button" className="lg:hidden text-white bg-lightB  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 ">
+                        <Users2/>
+                    </button>
                 </div>
             </div>
         </>

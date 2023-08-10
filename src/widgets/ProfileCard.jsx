@@ -220,12 +220,21 @@ const ProfileCard = (props) => {
                             <div className="mt-4 flex max-w-md flex-col gap-4 " >
                                     <form onSubmit={handleUpdateForm} className='flex flex-col gap-4'>
                                         <div>
+                                            <div className="mb-2 block">
+                                                <Label className='text-white' htmlFor="upFullname" value="Fullname" />
+                                            </div>
                                             <TextInput onChange={handleChange} value={updateDetails.upFullname} className='w-full' id="upFullname" name="emailOrUsername" placeholder="Enter full name" required type="text" />
                                         </div>
                                         <div>
+                                            <div className="mb-2 block">
+                                                <Label className='text-white' htmlFor="upLocation" value="Location" />
+                                            </div>
                                             <TextInput onChange={handleChange} value={updateDetails.upLocation} className='w-full' id="upLocation" name="emailOrUsername" placeholder="Enter location" required type="text" />
                                         </div>
                                         <div>
+                                            <div className="mb-2 block">
+                                                <Label className='text-white' htmlFor="upOccupation" value="Occupation" />
+                                            </div>
                                             <TextInput onChange={handleChange} value={updateDetails.upOccupation} className='w-full' id="upOccupation" name="emailOrUsername" placeholder="Enter occupation" required type="text" />
                                         </div>
                                         <button disabled={disableButton} className={`${disableButton?"cursor-not-allowed":""} text-white bg-lightB hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-cyan-950 dark:hover:bg-cyan-700`}>{buttonText.updateButton}</button>

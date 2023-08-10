@@ -1,6 +1,6 @@
 import {Link,useLocation, useNavigate} from 'react-router-dom'
 import { BellDot, Home, FlameIcon, LogOut, UserCircle2, Search, X } from 'lucide-react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setIsAuth, setUserId } from '../state';
 import { useContext, useEffect, useState } from 'react';
 import { Button, Label, TextInput, Textarea } from 'flowbite-react';
@@ -13,6 +13,7 @@ import PropTypes from "prop-types"
 const Navbar = (props) => {
     const context = useContext(alertContext)
     const {alert,showAlert} = context
+    const uName = useSelector((state)=>state.auth.uName)
 
     let navigate = useNavigate()
     let location = useLocation()
@@ -160,26 +161,26 @@ const Navbar = (props) => {
                                 </Link>
                                 {/* block md:hidden */}
                             </li>
-                            <li>
+                            {/* <li>
                                 <Link to="/notifications" onClick={toggleNavbar} className={`flex flex-wrap py-2 pl-3 pr-4 ${location.pathname==="/notifcations"?"text-lightB font-bold":"text-white"} hover:text-lightB hover:font-semibold`}>
                                     <BellDot/>
                                     <span className=' ml-6 md:ml-2 my-auto'>Notifications</span>
                                 </Link>
-                            </li>
+                            </li> */}
                             <li className='flex flex-wrap'>     
                                 {/* <div className="flex items-center justify-end md:order-2"> */}
-                                    <div onClick={toggleOptions} className="pl-2 flex items-center ">
+                                    <div onClick={toggleOptions} className="pl-3 flex items-center ">
                                         {/* <div className='flex items-center space-x-1 rounded-md pl-2 pr-1'> */}
                                         <div className='flex items-center space-x-1 rounded-md text-white cursor-pointer'>
                                             {/* <img className="w-10 h-10 rounded-full" src="https://res.cloudinary.com/dg7etzwks/image/upload/v1689588259/extras/userIcon_dhf5ym.png" alt=""/> */}
-                                            <UserCircle2 className='w-8 h-8'/>
+                                            <UserCircle2 className='w-6 h-6'/>
                                         </div>
                                     </div>
-                                    <span className='md:hidden text-white ml-5 my-auto'>View profile</span>
+                                    <Link to={`/profile/${uName}`} onClick={toggleNavbar}><span className='md:hidden text-white ml-6 my-auto'>View profile</span></Link>
                                     <div id="options" className="absolute hidden  z-10 top-14 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                                         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
                                             <li>
-                                                <Link onClick={()=>{navigate(`/${props.username}`);}} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">View profile</Link>
+                                                <Link to={`/profile/${uName}`} onClick={toggleOptions} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">View profile</Link>
                                             </li>
                                             <li>
                                                 <Link onClick={handleLogout} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Logout</Link>
