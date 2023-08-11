@@ -12,12 +12,7 @@ await connectToMongo()
 const app = express()
 const port = 5000
 
-app.use(cors(
-    {
-        origin: 'http://localhost:5173',
-        credentials: true,
-    }
-))
+app.use(cors())
 app.use(cookieParser())
 app.use(express.json())
 
