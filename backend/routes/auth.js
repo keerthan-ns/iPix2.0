@@ -89,6 +89,7 @@ router.post('/login',[
             success = true
             // new user stored is returned back
             res.cookie("authtoken",authtoken,{
+                sameSite: 'none',
                 expires: new Date(Date.now() + 900000000),
                 httpOnly: true,
                 secure: true,
