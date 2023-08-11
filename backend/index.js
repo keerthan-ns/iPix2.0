@@ -7,7 +7,7 @@ import authRoutes from './routes/auth.js'
 import postRoutes from './routes/posts.js'
 import userRoutes from './routes/user.js'
 
-connectToMongo()
+await connectToMongo()
 
 const app = express()
 const port = 5000
