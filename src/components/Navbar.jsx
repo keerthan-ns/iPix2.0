@@ -34,24 +34,24 @@ const Navbar = () => {
         document.getElementById('navbar-Compo').classList.toggle("hidden");
     }
     const handleLogout =async()=>{
-        // const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/api/auth/logout",{
-        //     method:'GET',
-        //     credentials: 'include',
-        // })
-        // try{
-        //     const json =await response.json()
-        //     if(json.success){
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/api/auth/logout",{
+            method:'GET',
+            credentials: 'include',
+        })
+        try{
+            const json =await response.json()
+            if(json.success){
                 dispatch(setIsAuth({isAuth:false}))
                 dispatch(setUserId({userID:null}))
                 localStorage.removeItem("reduxState")
                 navigate("/auth")
-        //         showAlert(json.success,json.message)
-        //     }
-        //     else
-        //         showAlert(json.success,json.message)
-        // } catch (error) {
-        //     console.error('Error parsing response as JSON:', error);
-        // }
+                showAlert(json.success,json.message)
+            }
+            else
+                showAlert(json.success,json.message)
+        } catch (error) {
+            console.error('Error parsing response as JSON:', error);
+        }
     }
 
     useEffect(() => {

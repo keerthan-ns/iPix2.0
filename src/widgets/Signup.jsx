@@ -77,7 +77,7 @@ const Signup = (props) => {
                 <Button type="submit" className="mt-2 bg-lightB border-none text-gray-950">
                     {signing && <Spinner size={"4"}/>}Sign Up
                 </Button>
-                <p onClick={()=>{props.setShowLogin(true)}} className='text-blue-300'>Have an account already?</p>
+                <p onClick={()=>{props.setShowLogin(true)}} className='text-blue-300 cursor-pointer'>Have an account already?</p>
             </form>
         </div>
     </>

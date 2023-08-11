@@ -80,7 +80,7 @@ const Login = (props) => {
                 <Button type="submit" className="mt-2 bg-lightB border-none text-gray-950">
                     {logging && <Spinner size={"4"}/>}Login
                 </Button>
-                <p onClick={()=>{props.setShowLogin(false)}} className='text-blue-300'>Don&apos;t have an account?</p>
+                <p onClick={()=>{props.setShowLogin(false)}} className='text-blue-300 cursor-pointer'>Don&apos;t have an account?</p>
             </form>
         </div>
     </>
