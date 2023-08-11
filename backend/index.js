@@ -12,7 +12,12 @@ await connectToMongo()
 const app = express()
 const port = 5000
 
-app.use(cors())
+app.use(cors(
+    {
+        origin: 'https://ipix-gilt.vercel.app/',
+        credentials: true,
+    }
+))
 app.use(cookieParser())
 app.use(express.json())
 
