@@ -61,8 +61,7 @@ const ProfilePage = () => {
             credentials: 'include',
         })
         const json = await response.json()
-        if(json.success){
-            console.log(json.message)//use custom alert later 
+        if(json.success){ 
             showAlert(json.success,json.message)
         }
         else    

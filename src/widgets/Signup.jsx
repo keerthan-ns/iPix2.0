@@ -26,7 +26,6 @@ const Signup = (props) => {
         })
         const json = await response.json()
         if(json.success){
-            console.log(json.message)
             props.setShowLogin(true)
             props.showAlert(json.success,json.message)
         }

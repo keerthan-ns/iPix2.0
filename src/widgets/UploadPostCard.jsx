@@ -26,7 +26,6 @@ const UploadPostCard = (props) => {
         setProcessing(true)
         try{
             setButtonText("Posting..")
-            console.log(postImage)
             const formData = new FormData()
             formData.append('postText', postData.postText)
             if (addLocation) formData.append('location', postData.location)
