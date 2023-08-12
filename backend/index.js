@@ -14,7 +14,7 @@ const port = 5001
 
 app.use(cors(
     {
-        origin: 'https://ipix-gilt.vercel.app',
+        origin: 'https://ipixx.vercel.app',
         credentials: true,
     }
 ))
