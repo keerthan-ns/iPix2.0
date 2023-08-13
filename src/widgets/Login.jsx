@@ -12,7 +12,7 @@ const Login = (props) => {
     let navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const [credentials, setCredentials] = useState({emailOrUsername:"thor",password:"thor1234"})
+    const [credentials, setCredentials] = useState({emailOrUsername:"",password:""})
     const [logging, setLogging] = useState(false)
     const [isPassword, setIsPassword] = useState(true)
 
