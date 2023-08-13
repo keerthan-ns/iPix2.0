@@ -102,7 +102,7 @@ const ProfilePage = () => {
                     } 
                 </div>
                 <div id='friendListDiv' className={`${switchList?'fixed w-full pr-4 max-h-[75%] overflow-y-scroll mx-auto':'hidden w-auto'} lg:block cursor-default`}>
-                    <FriendsList following={userInfo.mergedData.following}/>
+                    <FriendsList following={userInfo.mergedData.following} followUser={followUser}/>
                 </div>
                 <div className='fixed bottom-0 mr-4 mb-4 w-fit right-0'>
                     <button onClick={()=>{switchList?setSwitchList(false):setSwitchList(true);document.getElementById('friendListDiv').classList.toggle("hidden");}} type="button" className="lg:hidden text-white bg-lightB  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 ">

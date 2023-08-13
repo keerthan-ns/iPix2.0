@@ -24,6 +24,7 @@ const UserTiles = (props) => {
         })
         const json = await response.json()
         setUserID(json.mergedData.userId)
+        console.log(json.mergedData)
         setAvatar(json.mergedData[avatar])
         setFullName(json.mergedData.fullName)
         setIsFollowing(json.isFollowing)
